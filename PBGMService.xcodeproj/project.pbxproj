@@ -15,6 +15,9 @@
 		60C8194E1F6669B600CEC5D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60C8194C1F6669B600CEC5D6 /* LaunchScreen.storyboard */; };
 		60C819591F6669B700CEC5D6 /* PBGMServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819581F6669B700CEC5D6 /* PBGMServiceTests.m */; };
 		60C819641F6669B700CEC5D6 /* PBGMServiceUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819631F6669B700CEC5D6 /* PBGMServiceUITests.m */; };
+		60C819751F666AE100CEC5D6 /* PBGMService.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819741F666AE100CEC5D6 /* PBGMService.m */; };
+		60C8197C1F666DD400CEC5D6 /* sm4.c in Sources */ = {isa = PBXBuildFile; fileRef = 60C819781F666DD400CEC5D6 /* sm4.c */; };
+		60C8197E1F666DD400CEC5D6 /* sms4.c in Sources */ = {isa = PBXBuildFile; fileRef = 60C8197B1F666DD400CEC5D6 /* sms4.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,11 @@
 		60C8195F1F6669B700CEC5D6 /* PBGMServiceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PBGMServiceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C819631F6669B700CEC5D6 /* PBGMServiceUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PBGMServiceUITests.m; sourceTree = "<group>"; };
 		60C819651F6669B700CEC5D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60C819731F666AE100CEC5D6 /* PBGMService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBGMService.h; sourceTree = "<group>"; };
+		60C819741F666AE100CEC5D6 /* PBGMService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBGMService.m; sourceTree = "<group>"; };
+		60C819781F666DD400CEC5D6 /* sm4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sm4.c; sourceTree = "<group>"; };
+		60C819791F666DD400CEC5D6 /* sm4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sm4.h; sourceTree = "<group>"; };
+		60C8197B1F666DD400CEC5D6 /* sms4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sms4.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,7 @@
 		60C8193D1F6669B600CEC5D6 /* PBGMService */ = {
 			isa = PBXGroup;
 			children = (
+				60C819711F666ACA00CEC5D6 /* Pod */,
 				60C819411F6669B600CEC5D6 /* AppDelegate.h */,
 				60C819421F6669B600CEC5D6 /* AppDelegate.m */,
 				60C819441F6669B600CEC5D6 /* ViewController.h */,
@@ -138,6 +147,42 @@
 				60C819651F6669B700CEC5D6 /* Info.plist */,
 			);
 			path = PBGMServiceUITests;
+			sourceTree = "<group>";
+		};
+		60C819711F666ACA00CEC5D6 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				60C819721F666ACA00CEC5D6 /* Classes */,
+			);
+			path = Pod;
+			sourceTree = "<group>";
+		};
+		60C819721F666ACA00CEC5D6 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				60C819761F666DD400CEC5D6 /* cores */,
+				60C819731F666AE100CEC5D6 /* PBGMService.h */,
+				60C819741F666AE100CEC5D6 /* PBGMService.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		60C819761F666DD400CEC5D6 /* cores */ = {
+			isa = PBXGroup;
+			children = (
+				60C819771F666DD400CEC5D6 /* SM4 */,
+			);
+			path = cores;
+			sourceTree = "<group>";
+		};
+		60C819771F666DD400CEC5D6 /* SM4 */ = {
+			isa = PBXGroup;
+			children = (
+				60C819781F666DD400CEC5D6 /* sm4.c */,
+				60C819791F666DD400CEC5D6 /* sm4.h */,
+				60C8197B1F666DD400CEC5D6 /* sms4.c */,
+			);
+			path = SM4;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,6 +324,9 @@
 				60C819461F6669B600CEC5D6 /* ViewController.m in Sources */,
 				60C819431F6669B600CEC5D6 /* AppDelegate.m in Sources */,
 				60C819401F6669B600CEC5D6 /* main.m in Sources */,
+				60C8197C1F666DD400CEC5D6 /* sm4.c in Sources */,
+				60C8197E1F666DD400CEC5D6 /* sms4.c in Sources */,
+				60C819751F666AE100CEC5D6 /* PBGMService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +568,7 @@
 				60C8196A1F6669B700CEC5D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60C8196B1F6669B700CEC5D6 /* Build configuration list for PBXNativeTarget "PBGMServiceTests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +577,7 @@
 				60C8196D1F6669B700CEC5D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60C8196E1F6669B700CEC5D6 /* Build configuration list for PBXNativeTarget "PBGMServiceUITests" */ = {
 			isa = XCConfigurationList;
@@ -536,6 +586,7 @@
 				60C819701F6669B700CEC5D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
