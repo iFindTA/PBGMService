@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>PBGMKits.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>PBGMService.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>6083C5461F67DFA3001573A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6083C54E1F67DFA4001573A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>60C8193A1F6669B600CEC5D6</key>
 		<dict>
 			<key>primary</key>

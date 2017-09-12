@@ -21,7 +21,7 @@
 
 #include <string.h>
 #include <stdio.h>
-/*#include "sms4.h"*/
+#include "sms4.h"
 
 #ifndef unlong
 typedef unsigned long unlong;
@@ -356,7 +356,7 @@ void SMS4Encrypt1M()
 
 
 /* entry-point for debugging */
-int main()
+int mainSms4()//mainSms4
 {
     SMS4SetKey(NULL, 1);
 

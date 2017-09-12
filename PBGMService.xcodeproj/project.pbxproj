@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6083C53D1F67AB73001573A1 /* sms4.c in Sources */ = {isa = PBXBuildFile; fileRef = 6083C53C1F67AB73001573A1 /* sms4.c */; };
+		6083C5501F67DFA4001573A1 /* PBGMKits.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6083C5471F67DFA3001573A1 /* PBGMKits.framework */; };
+		6083C5571F67DFA4001573A1 /* PBGMKitsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6083C5561F67DFA4001573A1 /* PBGMKitsTests.m */; };
+		6083C5591F67DFA4001573A1 /* PBGMKits.h in Headers */ = {isa = PBXBuildFile; fileRef = 6083C5491F67DFA4001573A1 /* PBGMKits.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6083C55C1F67DFA4001573A1 /* PBGMKits.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6083C5471F67DFA3001573A1 /* PBGMKits.framework */; };
+		6083C55E1F67DFA4001573A1 /* PBGMKits.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6083C5471F67DFA3001573A1 /* PBGMKits.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6083C5651F67DFCB001573A1 /* sm4.c in Sources */ = {isa = PBXBuildFile; fileRef = 60C819781F666DD400CEC5D6 /* sm4.c */; };
+		6083C5661F67DFCB001573A1 /* PBGMService.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819741F666AE100CEC5D6 /* PBGMService.m */; };
+		6083C5671F67DFD4001573A1 /* sm4.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C819791F666DD400CEC5D6 /* sm4.h */; };
+		6083C5681F67DFD4001573A1 /* PBGMService.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C819731F666AE100CEC5D6 /* PBGMService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		60C819401F6669B600CEC5D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C8193F1F6669B600CEC5D6 /* main.m */; };
 		60C819431F6669B600CEC5D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819421F6669B600CEC5D6 /* AppDelegate.m */; };
 		60C819461F6669B600CEC5D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819451F6669B600CEC5D6 /* ViewController.m */; };
@@ -17,10 +27,30 @@
 		60C819641F6669B700CEC5D6 /* PBGMServiceUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819631F6669B700CEC5D6 /* PBGMServiceUITests.m */; };
 		60C819751F666AE100CEC5D6 /* PBGMService.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819741F666AE100CEC5D6 /* PBGMService.m */; };
 		60C8197C1F666DD400CEC5D6 /* sm4.c in Sources */ = {isa = PBXBuildFile; fileRef = 60C819781F666DD400CEC5D6 /* sm4.c */; };
-		60C8197E1F666DD400CEC5D6 /* sms4.c in Sources */ = {isa = PBXBuildFile; fileRef = 60C8197B1F666DD400CEC5D6 /* sms4.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6083C5511F67DFA4001573A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60C819331F6669B600CEC5D6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6083C5461F67DFA3001573A1;
+			remoteInfo = PBGMKits;
+		};
+		6083C5531F67DFA4001573A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60C819331F6669B600CEC5D6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60C8193A1F6669B600CEC5D6;
+			remoteInfo = PBGMService;
+		};
+		6083C55A1F67DFA4001573A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60C819331F6669B600CEC5D6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6083C5461F67DFA3001573A1;
+			remoteInfo = PBGMKits;
+		};
 		60C819551F6669B700CEC5D6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 60C819331F6669B600CEC5D6 /* Project object */;
@@ -37,7 +67,29 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6083C55D1F67DFA4001573A1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6083C55E1F67DFA4001573A1 /* PBGMKits.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6083C53C1F67AB73001573A1 /* sms4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sms4.c; sourceTree = "<group>"; };
+		6083C53E1F67B67D001573A1 /* sms4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sms4.h; sourceTree = "<group>"; };
+		6083C5471F67DFA3001573A1 /* PBGMKits.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PBGMKits.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6083C5491F67DFA4001573A1 /* PBGMKits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBGMKits.h; sourceTree = "<group>"; };
+		6083C54A1F67DFA4001573A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6083C54F1F67DFA4001573A1 /* PBGMKitsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PBGMKitsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6083C5561F67DFA4001573A1 /* PBGMKitsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PBGMKitsTests.m; sourceTree = "<group>"; };
+		6083C5581F67DFA4001573A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C8193B1F6669B600CEC5D6 /* PBGMService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PBGMService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C8193F1F6669B600CEC5D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		60C819411F6669B600CEC5D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -58,14 +110,29 @@
 		60C819741F666AE100CEC5D6 /* PBGMService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBGMService.m; sourceTree = "<group>"; };
 		60C819781F666DD400CEC5D6 /* sm4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sm4.c; sourceTree = "<group>"; };
 		60C819791F666DD400CEC5D6 /* sm4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sm4.h; sourceTree = "<group>"; };
-		60C8197B1F666DD400CEC5D6 /* sms4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sms4.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6083C5431F67DFA3001573A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6083C54C1F67DFA4001573A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6083C5501F67DFA4001573A1 /* PBGMKits.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60C819381F6669B600CEC5D6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6083C55C1F67DFA4001573A1 /* PBGMKits.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,12 +153,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6083C5481F67DFA4001573A1 /* PBGMKits */ = {
+			isa = PBXGroup;
+			children = (
+				6083C5491F67DFA4001573A1 /* PBGMKits.h */,
+				6083C54A1F67DFA4001573A1 /* Info.plist */,
+			);
+			path = PBGMKits;
+			sourceTree = "<group>";
+		};
+		6083C5551F67DFA4001573A1 /* PBGMKitsTests */ = {
+			isa = PBXGroup;
+			children = (
+				6083C5561F67DFA4001573A1 /* PBGMKitsTests.m */,
+				6083C5581F67DFA4001573A1 /* Info.plist */,
+			);
+			path = PBGMKitsTests;
+			sourceTree = "<group>";
+		};
 		60C819321F6669B600CEC5D6 = {
 			isa = PBXGroup;
 			children = (
 				60C8193D1F6669B600CEC5D6 /* PBGMService */,
 				60C819571F6669B700CEC5D6 /* PBGMServiceTests */,
 				60C819621F6669B700CEC5D6 /* PBGMServiceUITests */,
+				6083C5481F67DFA4001573A1 /* PBGMKits */,
+				6083C5551F67DFA4001573A1 /* PBGMKitsTests */,
 				60C8193C1F6669B600CEC5D6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -102,6 +189,8 @@
 				60C8193B1F6669B600CEC5D6 /* PBGMService.app */,
 				60C819541F6669B700CEC5D6 /* PBGMServiceTests.xctest */,
 				60C8195F1F6669B700CEC5D6 /* PBGMServiceUITests.xctest */,
+				6083C5471F67DFA3001573A1 /* PBGMKits.framework */,
+				6083C54F1F67DFA4001573A1 /* PBGMKitsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,16 +267,67 @@
 		60C819771F666DD400CEC5D6 /* SM4 */ = {
 			isa = PBXGroup;
 			children = (
+				6083C53C1F67AB73001573A1 /* sms4.c */,
+				6083C53E1F67B67D001573A1 /* sms4.h */,
 				60C819781F666DD400CEC5D6 /* sm4.c */,
 				60C819791F666DD400CEC5D6 /* sm4.h */,
-				60C8197B1F666DD400CEC5D6 /* sms4.c */,
 			);
 			path = SM4;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		6083C5441F67DFA3001573A1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6083C5591F67DFA4001573A1 /* PBGMKits.h in Headers */,
+				6083C5681F67DFD4001573A1 /* PBGMService.h in Headers */,
+				6083C5671F67DFD4001573A1 /* sm4.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		6083C5461F67DFA3001573A1 /* PBGMKits */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6083C55F1F67DFA4001573A1 /* Build configuration list for PBXNativeTarget "PBGMKits" */;
+			buildPhases = (
+				6083C5421F67DFA3001573A1 /* Sources */,
+				6083C5431F67DFA3001573A1 /* Frameworks */,
+				6083C5441F67DFA3001573A1 /* Headers */,
+				6083C5451F67DFA3001573A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PBGMKits;
+			productName = PBGMKits;
+			productReference = 6083C5471F67DFA3001573A1 /* PBGMKits.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		6083C54E1F67DFA4001573A1 /* PBGMKitsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6083C5621F67DFA4001573A1 /* Build configuration list for PBXNativeTarget "PBGMKitsTests" */;
+			buildPhases = (
+				6083C54B1F67DFA4001573A1 /* Sources */,
+				6083C54C1F67DFA4001573A1 /* Frameworks */,
+				6083C54D1F67DFA4001573A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6083C5521F67DFA4001573A1 /* PBXTargetDependency */,
+				6083C5541F67DFA4001573A1 /* PBXTargetDependency */,
+			);
+			name = PBGMKitsTests;
+			productName = PBGMKitsTests;
+			productReference = 6083C54F1F67DFA4001573A1 /* PBGMKitsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		60C8193A1F6669B600CEC5D6 /* PBGMService */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 60C819681F6669B700CEC5D6 /* Build configuration list for PBXNativeTarget "PBGMService" */;
@@ -195,10 +335,12 @@
 				60C819371F6669B600CEC5D6 /* Sources */,
 				60C819381F6669B600CEC5D6 /* Frameworks */,
 				60C819391F6669B600CEC5D6 /* Resources */,
+				6083C55D1F67DFA4001573A1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6083C55B1F67DFA4001573A1 /* PBXTargetDependency */,
 			);
 			name = PBGMService;
 			productName = PBGMService;
@@ -250,6 +392,17 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = nanhujiaju;
 				TargetAttributes = {
+					6083C5461F67DFA3001573A1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = M8K6A7692X;
+						ProvisioningStyle = Automatic;
+					};
+					6083C54E1F67DFA4001573A1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = M8K6A7692X;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 60C8193A1F6669B600CEC5D6;
+					};
 					60C8193A1F6669B600CEC5D6 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = M8K6A7692X;
@@ -285,11 +438,27 @@
 				60C8193A1F6669B600CEC5D6 /* PBGMService */,
 				60C819531F6669B700CEC5D6 /* PBGMServiceTests */,
 				60C8195E1F6669B700CEC5D6 /* PBGMServiceUITests */,
+				6083C5461F67DFA3001573A1 /* PBGMKits */,
+				6083C54E1F67DFA4001573A1 /* PBGMKitsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6083C5451F67DFA3001573A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6083C54D1F67DFA4001573A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60C819391F6669B600CEC5D6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -317,6 +486,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6083C5421F67DFA3001573A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6083C5651F67DFCB001573A1 /* sm4.c in Sources */,
+				6083C5661F67DFCB001573A1 /* PBGMService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6083C54B1F67DFA4001573A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6083C5571F67DFA4001573A1 /* PBGMKitsTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60C819371F6669B600CEC5D6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -325,7 +511,7 @@
 				60C819431F6669B600CEC5D6 /* AppDelegate.m in Sources */,
 				60C819401F6669B600CEC5D6 /* main.m in Sources */,
 				60C8197C1F666DD400CEC5D6 /* sm4.c in Sources */,
-				60C8197E1F666DD400CEC5D6 /* sms4.c in Sources */,
+				6083C53D1F67AB73001573A1 /* sms4.c in Sources */,
 				60C819751F666AE100CEC5D6 /* PBGMService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +535,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6083C5521F67DFA4001573A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6083C5461F67DFA3001573A1 /* PBGMKits */;
+			targetProxy = 6083C5511F67DFA4001573A1 /* PBXContainerItemProxy */;
+		};
+		6083C5541F67DFA4001573A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60C8193A1F6669B600CEC5D6 /* PBGMService */;
+			targetProxy = 6083C5531F67DFA4001573A1 /* PBXContainerItemProxy */;
+		};
+		6083C55B1F67DFA4001573A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6083C5461F67DFA3001573A1 /* PBGMKits */;
+			targetProxy = 6083C55A1F67DFA4001573A1 /* PBXContainerItemProxy */;
+		};
 		60C819561F6669B700CEC5D6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 60C8193A1F6669B600CEC5D6 /* PBGMService */;
@@ -381,6 +582,74 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6083C5601F67DFA4001573A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = M8K6A7692X;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = PBGMKits/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nanhu.PBGMKits;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6083C5611F67DFA4001573A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = M8K6A7692X;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = PBGMKits/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nanhu.PBGMKits;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		6083C5631F67DFA4001573A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = M8K6A7692X;
+				INFOPLIST_FILE = PBGMKitsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nanhu.PBGMKitsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PBGMService.app/PBGMService";
+			};
+			name = Debug;
+		};
+		6083C5641F67DFA4001573A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = M8K6A7692X;
+				INFOPLIST_FILE = PBGMKitsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nanhu.PBGMKitsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PBGMService.app/PBGMService";
+			};
+			name = Release;
+		};
 		60C819661F6669B700CEC5D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -552,6 +821,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6083C55F1F67DFA4001573A1 /* Build configuration list for PBXNativeTarget "PBGMKits" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6083C5601F67DFA4001573A1 /* Debug */,
+				6083C5611F67DFA4001573A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6083C5621F67DFA4001573A1 /* Build configuration list for PBXNativeTarget "PBGMKitsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6083C5631F67DFA4001573A1 /* Debug */,
+				6083C5641F67DFA4001573A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		60C819361F6669B600CEC5D6 /* Build configuration list for PBXProject "PBGMService" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -48,6 +48,16 @@
                ReferencedContainer = "container:PBGMService.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6083C54E1F67DFA4001573A1"
+               BuildableName = "PBGMKitsTests.xctest"
+               BlueprintName = "PBGMKitsTests"
+               ReferencedContainer = "container:PBGMService.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -81,6 +91,13 @@
             ReferencedContainer = "container:PBGMService.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "NSZombieEnabled"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
