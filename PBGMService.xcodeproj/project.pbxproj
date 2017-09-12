@@ -17,6 +17,7 @@
 		6083C5661F67DFCB001573A1 /* PBGMService.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819741F666AE100CEC5D6 /* PBGMService.m */; };
 		6083C5671F67DFD4001573A1 /* sm4.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C819791F666DD400CEC5D6 /* sm4.h */; };
 		6083C5681F67DFD4001573A1 /* PBGMService.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C819731F666AE100CEC5D6 /* PBGMService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6083C56D1F67E181001573A1 /* sm3.c in Sources */ = {isa = PBXBuildFile; fileRef = 6083C56A1F67E181001573A1 /* sm3.c */; };
 		60C819401F6669B600CEC5D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C8193F1F6669B600CEC5D6 /* main.m */; };
 		60C819431F6669B600CEC5D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819421F6669B600CEC5D6 /* AppDelegate.m */; };
 		60C819461F6669B600CEC5D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819451F6669B600CEC5D6 /* ViewController.m */; };
@@ -90,6 +91,8 @@
 		6083C54F1F67DFA4001573A1 /* PBGMKitsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PBGMKitsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6083C5561F67DFA4001573A1 /* PBGMKitsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PBGMKitsTests.m; sourceTree = "<group>"; };
 		6083C5581F67DFA4001573A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6083C56A1F67E181001573A1 /* sm3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sm3.c; sourceTree = "<group>"; };
+		6083C56B1F67E181001573A1 /* sm3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sm3.h; sourceTree = "<group>"; };
 		60C8193B1F6669B600CEC5D6 /* PBGMService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PBGMService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C8193F1F6669B600CEC5D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		60C819411F6669B600CEC5D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -169,6 +172,15 @@
 				6083C5581F67DFA4001573A1 /* Info.plist */,
 			);
 			path = PBGMKitsTests;
+			sourceTree = "<group>";
+		};
+		6083C5691F67E16D001573A1 /* SM3 */ = {
+			isa = PBXGroup;
+			children = (
+				6083C56A1F67E181001573A1 /* sm3.c */,
+				6083C56B1F67E181001573A1 /* sm3.h */,
+			);
+			path = SM3;
 			sourceTree = "<group>";
 		};
 		60C819321F6669B600CEC5D6 = {
@@ -259,6 +271,7 @@
 		60C819761F666DD400CEC5D6 /* cores */ = {
 			isa = PBXGroup;
 			children = (
+				6083C5691F67E16D001573A1 /* SM3 */,
 				60C819771F666DD400CEC5D6 /* SM4 */,
 			);
 			path = cores;
@@ -510,6 +523,7 @@
 				60C819461F6669B600CEC5D6 /* ViewController.m in Sources */,
 				60C819431F6669B600CEC5D6 /* AppDelegate.m in Sources */,
 				60C819401F6669B600CEC5D6 /* main.m in Sources */,
+				6083C56D1F67E181001573A1 /* sm3.c in Sources */,
 				60C8197C1F666DD400CEC5D6 /* sm4.c in Sources */,
 				6083C53D1F67AB73001573A1 /* sms4.c in Sources */,
 				60C819751F666AE100CEC5D6 /* PBGMService.m in Sources */,

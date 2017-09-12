@@ -21,6 +21,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark --- SM3 Algorithm ---
 
+/**
+ hash data for sm3
+
+ @param plainData for input plain data
+ @return hash result, null for error
+ */
+- (NSData * _Nullable)sm3_hashWithPainData:(NSData *)plainData;
+
+/**
+ hash file for sm3
+
+ @param path for plain data file path
+ @param completion callback for hash result
+ */
+- (void)sm3_hashWithFilePath:(NSString *)path withCompletion:(void(^_Nullable)(NSError*_Nullable err, NSData *_Nullable hash))completion;
+
 #pragma mark --- SM4 Algorithm ---
 
 /**

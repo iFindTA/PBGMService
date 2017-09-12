@@ -37,14 +37,14 @@
     
     
     /*加密文件 pass
-    NSString *srcPath = @"/Users/nanhujiaju/Desktop/MXSDK.h";
-    NSString *desPath = @"/Users/nanhujiaju/Desktop/MXSDK_EN.h";
+    NSString *srcPath = @"/Users/nanhujiaju/Desktop/Appdelegate.h";
+    NSString *desPath = @"/Users/nanhujiaju/Desktop/Appdelegate_en.h";
     [[PBGMService shared] sm4_encryptFile:srcPath withDestFilePath:desPath withCipherKey:sm4_key withCompletion:^(NSError * _Nullable err) {
         NSLog(@"error:%@", err.localizedDescription);
     }];
     
-    NSString *des_key = @"xZpLIJSeFRqvkZrM";
-    NSString *decPath = @"/Users/nanhujiaju/Desktop/MXSDK_DE.h";
+    NSString *des_key = @"V96l2Hip739WR7V5";
+    NSString *decPath = @"/Users/nanhujiaju/Desktop/Appdelegate_de.h";
     [[PBGMService shared] sm4_decryptFile:desPath withDestFilePath:decPath withCipherKey:des_key withCompletion:^(NSError * _Nullable err) {
         NSLog(@"decrypt file error:%@", err.localizedDescription);
     }];

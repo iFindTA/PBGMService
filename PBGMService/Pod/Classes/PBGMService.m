@@ -7,6 +7,7 @@
 //
 
 #import "PBGMService.h"
+#import "sm3.h"
 #import "sm4.h"
 
 static unsigned int const CURRENT_VERSION   =   23;
@@ -437,6 +438,18 @@ decrypt_file_end:
     if (completion) {
         completion(err);
     }
+}
+
+#pragma mark --- SM3 Algorithm ---
+
+- (NSData *_Nullable)sm3_hashWithPainData:(NSData *)plainData {
+    
+    
+    return nil;
+}
+
+- (void)sm3_hashWithFilePath:(NSString *)path withCompletion:(void (^)(NSError * _Nullable, NSData * _Nullable))completion {
+    
 }
 
 @end
