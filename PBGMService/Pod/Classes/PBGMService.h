@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param key for sm4 cbc-mode
  @return encrypt result, null for error
  */
-- (NSData * _Nullable)sm4_encryptData:(NSData *)plainData withCipherKey:(NSString *)key;
+- (NSData * _Nullable)sm4_encryptData:(NSData *)plainData withCipherKey:(NSString *)key NS_AVAILABLE_IOS(8_0);
 
 /**
  decrypt cipher data for sm4
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param key for sm4 cbc-mode
  @return decrypt result, null for error
  */
-- (NSData * _Nullable)sm4_decryptData:(NSData *)cipherData withCipherKey:(NSString *)key;
+- (NSData * _Nullable)sm4_decryptData:(NSData *)cipherData withCipherKey:(NSString *)key NS_AVAILABLE_IOS(8_0);
 
 /**
  encrypt plain file for sm4-ecb
@@ -86,6 +86,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion for call back, null error if success
  */
 - (void)sm4_decryptFile:(NSString *)srcPath withDestFilePath:(NSString *)desPath withCipherKey:(NSString *)key withCompletion:(void(^_Nullable)(NSError*_Nullable err))completion;
+
+#pragma mark --- AES-GCM Algorithm ---
 
 @end
 

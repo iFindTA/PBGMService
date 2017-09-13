@@ -443,7 +443,10 @@ decrypt_file_end:
 #pragma mark --- SM3 Algorithm ---
 
 - (NSData *_Nullable)sm3_hashWithPainData:(NSData *)plainData {
-    
+    if (plainData == nil) {
+        NSLog(@"got an empty input!");
+        return plainData;
+    }
     
     return nil;
 }

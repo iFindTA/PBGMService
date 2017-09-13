@@ -49,6 +49,10 @@
         NSLog(@"decrypt file error:%@", err.localizedDescription);
     }];
     //*/
+    
+    //test for sm3
+    NSData *sm3Hash = [[PBGMService shared] sm3_hashWithPainData:plainData];
+    
 }
 
 
