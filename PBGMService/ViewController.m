@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "PBGMService.h"
+#import "PBBase64.h"
 
 @interface ViewController ()
 
@@ -35,7 +36,6 @@
     NSString *convertString = [[NSString alloc] initWithData:decryptData encoding:NSUTF8StringEncoding];
     NSLog(@"解密结果:%@", convertString);
     
-    
     /*加密文件 pass
     NSString *srcPath = @"/Users/nanhujiaju/Desktop/Appdelegate.h";
     NSString *desPath = @"/Users/nanhujiaju/Desktop/Appdelegate_en.h";
@@ -50,8 +50,23 @@
     }];
     //*/
     
-    //test for sm3
+    /* sm3
     NSData *sm3Hash = [[PBGMService shared] sm3_hashWithPainData:plainData];
+    NSString *sm3HashString = [sm3Hash pb_base64String];
+    NSLog(@"sm3 hash string:%@", sm3HashString);//bsd/Ha2tik1i2r26NTVxgSt4tn7InOzXBFDlBreIzKc=
+    //sm3 file
+    NSString *srcPath = @"/Users/nanhujiaju/Desktop/EZAudio-master.zip";
+    [[PBGMService shared] sm3_hashWithFilePath:srcPath withCompletion:^(NSError * _Nullable err, NSData * _Nullable hash) {
+        if (err) {
+            NSLog(@"failed to sm3 for error:%@", err.localizedDescription);
+        } else {
+            NSString *sm3String = [hash pb_base64String];
+            NSLog(@"sm3 file hash:%@", sm3String);
+        };
+    }];
+    //*/
+    
+    //sm2
     
 }
 

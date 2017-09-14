@@ -7,6 +7,7 @@
 //
 
 #import "PBGMService.h"
+#import "sm2.h"
 #import "sm3.h"
 #import "sm4.h"
 
@@ -156,7 +157,7 @@ static PBGMService * instance = nil;
     //设置上下文和密钥
     sm4_context ctx;
     sm4_setkey_dec(&ctx,sm4Key);
-    sm4_crypt_cbc(&ctx, SM4_DECRYPT, cipherData.length, iv, cipherTextChar, plainOutChar);
+    sm4_crypt_cbc(&ctx, SM4_DECRYPT, (int)cipherData.length, iv, cipherTextChar, plainOutChar);
     
     //由于明文是填充过的，解密时候要去填充，去填充要在解密后才可以，在解密前是去不了的
     int p2 = plainOutChar[sizeof(plainOutChar) - 1];//p2是填充的数据，也是填充的长度
@@ -447,12 +448,43 @@ decrypt_file_end:
         NSLog(@"got an empty input!");
         return plainData;
     }
+    int plainLen = (int)plainData.length;
+    unsigned char plainInChar[plainLen];
+    memcpy(plainInChar, plainData.bytes, plainLen);
     
-    return nil;
+    //init hash output
+    int outputLen = 32;
+    unsigned char output[outputLen];
+    sm3(plainInChar, plainLen, output);
+    return [NSData dataWithBytes:output length:outputLen];
 }
 
 - (void)sm3_hashWithFilePath:(NSString *)path withCompletion:(void (^)(NSError * _Nullable, NSData * _Nullable))completion {
+    NSAssert(path.length != 0, @"could not read an empty path!");
+    NSError *err;
     
+    //prepare input file path
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:path]) {
+        err = [NSError errorWithDomain:@"file not exist!" code:-1 userInfo:nil];
+        if (completion) {
+            completion(err, nil);
+        }
+        return;
+    }
+    char *filePath = (char *)[path UTF8String];
+    //init hash output
+    int outputLen = 32;
+    unsigned char output[outputLen];
+    sm3_file(filePath, output);
+    NSData *outSM3Hex = [NSData dataWithBytes:output length:outputLen];
+    if (completion) {
+        completion(err, outSM3Hex);
+    }
 }
+
+#pragma mark --- SM2 Algorithm ---
+
+
 
 @end
