@@ -138,7 +138,7 @@
 #### 编译即可，enjoy it！
 
 #### 参考资料：在此一并感谢资料提供者！
-1，[sm2算法参考](https://github.com/dishibolei/SM2)，此算法中作者实现了SM2密钥生成和加解密，未实现签名和验证签名，作者补气了签名和验签的方法
+1，[sm2算法参考](https://github.com/dishibolei/SM2)，此算法中作者实现了SM2密钥生成和加解密，未实现签名和验证签名，作者补齐了签名和验签的方法
 
 2，[sm3/sm4参考](http://www.cnblogs.com/TaiYangXiManYouZhe/p/4317519.html)
 
