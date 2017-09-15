@@ -3,6 +3,7 @@
 
 ### 前言
 	鉴于目前网上关于国密算法资料都是零散不完整的现状，作者近两天整理了一下相关的算法并公布出来，以期望大家能够方便的在iOS平台更方便的使用国密算法
+	作者观点：算法不是重点！重点是如何提高密钥的安全性（譬如动态白盒）！！！
 	觉得有用就亮个Star！
 ### Usage
 #### 关键类：PBGMService
@@ -142,9 +143,13 @@
 2，[sm3/sm4参考](http://www.cnblogs.com/TaiYangXiManYouZhe/p/4317519.html)
 
 #### TODO List:
-1，SM9算法的引入及使用
-2，AES的GCM模式、NI模式等的引入
-3，android、golang、java等更多平台的支持！
+* 1，密钥安全性（动态白盒、静态白盒），作者觉得这才是重点！
+
+* 2，SM9算法的引入及使用
+
+* 3，AES的GCM模式、NI模式等的引入
+
+* 4，android、golang、java等更多平台的支持！
 
 #### feedback
 	nanhujiaju@gmail.com
