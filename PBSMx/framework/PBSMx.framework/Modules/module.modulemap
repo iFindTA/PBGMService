@@ -1,0 +1,6 @@
+framework module PBSMx {
+  umbrella header "PBSMx.h"
+
+  export *
+  module * { export * }
+}

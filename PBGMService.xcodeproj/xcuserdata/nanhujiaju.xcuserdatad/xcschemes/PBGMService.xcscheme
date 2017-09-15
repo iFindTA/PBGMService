@@ -58,6 +58,16 @@
                ReferencedContainer = "container:PBGMService.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6083C7C11F6B6544001573A1"
+               BuildableName = "PBSMxTests.xctest"
+               BlueprintName = "PBSMxTests"
+               ReferencedContainer = "container:PBGMService.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

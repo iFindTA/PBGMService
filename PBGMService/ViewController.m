@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "PBGMService.h"
-#import "PBBase64.h"
 
 @interface ViewController ()
 
@@ -66,8 +65,25 @@
     }];
     //*/
     
-    //sm2
+    //sm2 key pairs/encrypt/decrypt/sign
+    NSArray *keyPairs = [[PBGMService shared] randomSM2KeyPairs];
+    NSLog(@"keyPaic = %@",keyPairs);
     
+    NSString *publicKey = [NSString stringWithFormat:@"%@%@",keyPairs[0],keyPairs[1]];
+    NSString *priviteKey = keyPairs[2];
+    NSLog(@"publicKey = %@ , priKey = %@",publicKey,priviteKey);
+    //encrypt/decrypt
+    NSString *str = @"encryption standard，你好帅哥";
+    NSString *encode = [[PBGMService shared] sm2_encryptPlainString:str withPublicKey:publicKey];
+    NSLog(@"encode finished");
+    NSString *decode = [[PBGMService shared] sm2_decryptCipherString:encode withPrivateKey:priviteKey];
+    NSLog(@"encode = %@ , decode = %@",encode,decode);
+    //签名、验证签名
+    NSString *uid = @"nanhujiaju@gmail.com";
+    NSString *signedString = [[PBGMService shared] sm2_signPlainString:str withUID:uid withPrivateKey:priviteKey];
+    NSLog(@"signed string:%@", signedString);
+    BOOL ret = [[PBGMService shared] sm2_verifyWithPlainString:str withSigned:signedString withUID:uid withPublicKey:publicKey];
+    NSLog(@"验证结果:%@", ret?@"成功！":@"失败！");
 }
 
 

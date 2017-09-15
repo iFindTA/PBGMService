@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>PBSMx.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -23,6 +28,16 @@
 			<true/>
 		</dict>
 		<key>6083C54E1F67DFA4001573A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6083C7B91F6B6544001573A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6083C7C11F6B6544001573A1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

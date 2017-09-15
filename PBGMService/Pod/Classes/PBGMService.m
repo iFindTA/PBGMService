@@ -11,7 +11,7 @@
 #import "sm3.h"
 #import "sm4.h"
 
-static unsigned int const CURRENT_VERSION   =   23;
+//static unsigned int const CURRENT_VERSION   =   23;
 static unsigned int const SM4_BLOCK_SIZE    =   16;
 /** vector for aes/sm4 **/
 static NSString * const IV_SM4              =   @"sm4ivectorcodec1";
@@ -485,6 +485,114 @@ decrypt_file_end:
 
 #pragma mark --- SM2 Algorithm ---
 
+- (NSArray <NSString *>*)randomSM2KeyPairs {
+    unsigned char buff[64] = {0};
+    unsigned char prikeyBuff[2000] = {0};
+    unsigned long priLen = 2000;
+    
+    GM_GenSM2keypair(prikeyBuff, &priLen, buff);
+    
+    NSData *pubXD = [NSData dataWithBytes:buff length:32];
+    NSData *pubYD = [NSData dataWithBytes:buff+32 length:32];
+    NSData *priD = [NSData dataWithBytes:prikeyBuff length:priLen];
+    
+    NSString *pubX = [pubXD hexStringFromData:pubXD];
+    NSString *pubY = [pubYD hexStringFromData:pubYD];
+    NSString *pri = [priD hexStringFromData:priD];
+    
+    return @[pubX,pubY,pri];
+}
 
+- (NSString * _Nullable)sm2_encryptPlainString:(NSString *)str withPublicKey:(NSString *)key {
+    if ([str length] == 0 || [key length] == 0) {
+        return @"";
+    }
+    
+    unsigned char result[1024] = {0};
+    unsigned long outlen = 1024;
+    const char *encryptData = [str cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *keyData =  [NSData dataFromHexString:key];
+    
+    int ret = GM_SM2Encrypt(result,&outlen,(unsigned char *)encryptData,strlen(encryptData),(unsigned char *)keyData.bytes,keyData.length);
+    
+    if (outlen < 2 || ret != MP_OKAY) {
+        //加密出错了
+        return @"";
+    }
+    
+    //多一位\x04 需要去掉
+    NSData *data = [NSData dataWithBytes:result + 1 length:outlen - 1];
+    
+    return [data hexStringFromData:data];
+}
+
+- (NSString * _Nullable)sm2_decryptCipherString:(NSString *)str withPrivateKey:(NSString *)key {
+    //密文长度至少也需要64+32位
+    if ([str length] < 64 + 32 || [key length] == 0) {
+        return @"";
+    }
+    
+    unsigned char result[1024 * 8] = {0};
+    
+    unsigned char pass[1024] = {0};
+    
+    NSData *keyData =  [NSData dataFromHexString:key];
+    
+    NSData *data = [NSData dataFromHexString:str];
+    pass[0] = '\x04'; //需要补一位\x04
+    memcpy(pass + 1, data.bytes, data.length);
+    
+    unsigned long outlen = 1024;
+    
+    int ret = GM_SM2Decrypt((unsigned char *)result, &outlen, pass, data.length + 1, (unsigned char *)keyData.bytes, keyData.length);
+    
+    if (outlen == 0 || ret != MP_OKAY) {
+        //加密出错了
+        return @"";
+    }
+    NSString *resultStr = [[NSString alloc] initWithBytes:result length:outlen encoding:NSUTF8StringEncoding];
+    
+    return resultStr;
+}
+
+- (NSString * _Nullable)sm2_signPlainString:(NSString *)str withUID:(NSString *)uid withPrivateKey:(NSString *)key {
+    if ([str length] == 0 || [key length] == 0) {
+        return @"";
+    }
+    
+    unsigned char result[64] = {0};
+    unsigned long outlen = 64;
+    const char *signData = [str cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *uidData = [uid cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *keyData =  [NSData dataFromHexString:key];
+    
+    int ret = GM_SM2Sign((unsigned char *)result, &outlen, (unsigned char *)signData, strlen(signData), (unsigned char *)uidData, strlen(uidData), (unsigned char *)keyData.bytes, keyData.length);
+    if (outlen < 2 || ret != MP_OKAY) {
+        NSLog(@"签名出错了");
+        return @"";
+    }
+    
+    //验证签名
+//    NSData *priKeyData =  [NSData dataFromHexString:priKey];
+//    ret = GM_SM2VerifySig((unsigned char *)result, outlen, (unsigned char *)signData, strlen(signData), (unsigned char *)uidData, strlen(uidData), (unsigned char *)priKeyData.bytes, priKeyData.length);
+    
+    //多一位\x04 需要去掉
+    NSData *data = [NSData dataWithBytes:result length:outlen];
+    return [data hexStringFromData:data];
+}
+
+- (BOOL)sm2_verifyWithPlainString:(NSString *)str withSigned:(NSString *)sign withUID:(NSString *)uid withPublicKey:(NSString *)key {
+    if ([str length] == 0 || sign.length == 0 || [key length] == 0) {
+        return false;
+    }
+    const char *srcData = [str cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *signData = [NSData dataFromHexString:sign];
+    const char *uidData = [uid cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *keyData =  [NSData dataFromHexString:key];
+    
+    int ret = GM_SM2VerifySig((unsigned char *)signData.bytes, signData.length, (unsigned char *)srcData, strlen(srcData), (unsigned char *)uidData, strlen(uidData), (unsigned char *)keyData.bytes, keyData.length);
+    
+    return ret == 0;
+}
 
 @end
