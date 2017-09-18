@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "593"
             endingLineNumber = "593"
-            landmarkName = "-sm2_verifyWithPlainString:withSigned:withUID:withPublicKey:"
+            landmarkName = "-sm2_decryptCipherString:withPrivateKey:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

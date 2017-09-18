@@ -8,9 +8,11 @@
 
 #import "ViewController.h"
 #import "PBGMService.h"
+#import <AudioToolbox/AudioQueue.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface ViewController () <AVCaptureAudioDataOutputSampleBufferDelegate>
+@interface ViewController ()
 
 @end
 
@@ -66,7 +68,7 @@
     }];
     //*/
     
-    //sm2 key pairs/encrypt/decrypt/sign
+    /*sm2 key pairs/encrypt/decrypt/sign
     NSArray *keyPairs = [[PBGMService shared] randomSM2KeyPairs];
     NSLog(@"keyPaic = %@",keyPairs);
     
@@ -85,6 +87,34 @@
     NSLog(@"signed string:%@", signedString);
     BOOL ret = [[PBGMService shared] sm2_verifyWithPlainString:str withSigned:signedString withUID:uid withPublicKey:publicKey];
     NSLog(@"验证结果:%@", ret?@"成功！":@"失败！");
+    //*/
+    
+    //sm4 sample stream encrypt/decrypt
+    //这里示例为语音录音后的数据缓存段
+    AudioQueueBufferRef buffer = NULL;//如何实现录音不再赘述
+    NSData *bufferData = [NSData dataWithBytes:buffer->mAudioData length:buffer->mAudioDataByteSize];
+    NSUInteger audioLen = [bufferData length];
+    NSLog(@"audio data len :%zd",audioLen);
+    const Byte *inBytes = (const Byte *)[bufferData bytes];
+    //const byte *inBytes = (const byte *)[plainString UTF8String];
+    unsigned int in_len = (unsigned int)strlen((const char *)inBytes);
+    unsigned int len_mode = in_len / 16;
+    if (in_len % 16 != 0) {
+        len_mode += 1;
+    }
+    Byte outBytes[len_mode*16];
+    unsigned int out_len;
+    [[PBGMService shared] sm4_encryptStream:inBytes inLength:in_len withOutput:outBytes outLength:&out_len withCipherKey:sm4_key];
+    
+    //decrypt stream
+    len_mode = out_len / 16;
+    if (out_len % 16 != 0) {
+        len_mode += 1;
+    }
+    Byte out2[len_mode*16];
+    unsigned int out_len2 = 0;
+    [[PBGMService shared] sm4_decryptStream:outBytes inLength:out_len withOutput:out2 outLength:&out_len2 withCipherKey:sm4_key];
+    out2[out_len2] = '\0';
 }
 
 
