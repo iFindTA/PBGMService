@@ -185,7 +185,7 @@ long file_len(FILE *file) {
 
 #define FILE_MAX_CRYPTO_SIZE 1024 * 1024 * 10 //10M
 #define FILE_BLOCK_SIZE 128 //16K
-#define VERSION_PREFIX_LEN 0 //前四个字节 携带版本信息
+#define VERSION_PREFIX_LEN 4 //前四个字节 携带版本信息
 - (void)sm4_encryptFile:(NSString *)srcPath withDestFilePath:(NSString *)desPath withCipherKey:(NSString *)key withCompletion:(void (^ _Nullable)(NSError * _Nullable))completion {
     NSAssert(srcPath.length != 0, @"could not read an empty path!");
     NSAssert(desPath.length != 0, @"could not open an empty path!");
@@ -439,6 +439,49 @@ decrypt_file_end:
     if (completion) {
         completion(err);
     }
+}
+- (void)sm4_encryptStream:(const Byte *)inBytes inLength:(unsigned int)inLen withOutput:(Byte *)outBytes outLength:(unsigned int *)outLen withCipherKey:(NSString *)key {
+    NSAssert(key.length != 0, @"could not use an empty cipher key!");
+    //prepare for key
+    const char* utf8Key = [key UTF8String];
+    size_t utf_len = strlen(utf8Key) + 1;
+    unsigned char sm4Key[utf_len];
+    memcpy(sm4Key, utf8Key, utf_len);
+    //block size
+    int block_size = SM4_BLOCK_SIZE;
+    size_t len = inLen/block_size * block_size;
+    unsigned char *input = malloc(sizeof(Byte) * len);
+    memcpy(input, inBytes, len);
+    //encrypt with sm4-ecb
+    sm4_context ctx;
+    sm4_setkey_enc(&ctx, sm4Key);
+    sm4_crypt_ecb(&ctx, SM4_ENCRYPT, (int)len, input, outBytes + VERSION_PREFIX_LEN);
+    //done
+    memcpy(outBytes + VERSION_PREFIX_LEN + len, inBytes + len, inLen - len);
+    *outLen = inLen + VERSION_PREFIX_LEN;
+    free(input);
+}
+
+- (void)sm4_decryptStream:(const Byte *)inBytes inLength:(unsigned int)inLen withOutput:(Byte *)outBytes outLength:(unsigned int *)outLen withCipherKey:(NSString *)key {
+    NSAssert(key.length != 0, @"could not use an empty cipher key!");
+    //prepare for key
+    const char* utf8Key = [key UTF8String];
+    size_t utf_len = strlen(utf8Key) + 1;
+    unsigned char sm4Key[utf_len];
+    memcpy(sm4Key, utf8Key, utf_len);
+    //block size
+    int block_size = SM4_BLOCK_SIZE;
+    size_t len = (inLen - VERSION_PREFIX_LEN)/block_size * block_size;
+    Byte *out_tmp = malloc(sizeof(Byte) * len);
+    //decrypt
+    sm4_context ctx;
+    sm4_setkey_dec(&ctx, sm4Key);
+    sm4_crypt_ecb(&ctx, SM4_DECRYPT, (int)len, (unsigned char *)inBytes + VERSION_PREFIX_LEN, out_tmp);
+    //done
+    memcpy(outBytes, out_tmp, len);
+    memcpy(outBytes + len, inBytes + VERSION_PREFIX_LEN + len, inLen - VERSION_PREFIX_LEN - len);
+    *outLen = inLen - VERSION_PREFIX_LEN;
+    free(out_tmp);
 }
 
 #pragma mark --- SM3 Algorithm ---

@@ -8,8 +8,9 @@
 
 #import "ViewController.h"
 #import "PBGMService.h"
+#import <AVFoundation/AVFoundation.h>
 
-@interface ViewController ()
+@interface ViewController () <AVCaptureAudioDataOutputSampleBufferDelegate>
 
 @end
 

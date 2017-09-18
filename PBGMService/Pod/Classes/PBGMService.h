@@ -134,6 +134,28 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sm4_decryptFile:(NSString *)srcPath withDestFilePath:(NSString *)desPath withCipherKey:(NSString *)key withCompletion:(void(^_Nullable)(NSError*_Nullable err))completion;
 
+/**
+ encrypt plain stream byte for sm4-ecb
+
+ @param inBytes plain bytes
+ @param inLen plain byte len
+ @param outBytes out cipher bytes
+ @param outLen out length
+ @param key cipher key
+ */
+- (void)sm4_encryptStream:(const Byte *)inBytes inLength:(unsigned int)inLen withOutput:(Byte *)outBytes outLength:(unsigned int *)outLen withCipherKey:(NSString *)key;
+
+/**
+ decrypt cipher stream byte for sm4-ecb
+
+ @param inBytes cipher bytes
+ @param inLen cipher byte len
+ @param outBytes out plain bytes
+ @param outLen out plain byte len
+ @param key cipher key
+ */
+- (void)sm4_decryptStream:(const Byte *)inBytes  inLength:(unsigned int)inLen withOutput:(Byte *)outBytes outLength:(unsigned int *)outLen withCipherKey:(NSString *)key;
+
 #pragma mark --- AES-GCM Algorithm ---
 
 @end
