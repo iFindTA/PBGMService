@@ -26,7 +26,7 @@
     NSString *sm4_key = [[PBGMService shared] randomSM4Key];
     NSLog(@"key for sm4:%@", sm4_key);
     
-    //sm4 encrypt
+    /*sm4 encrypt
     NSString *plainText = @"hello, world! and home town";
     NSData *plainData = [plainText dataUsingEncoding:NSUTF8StringEncoding];
     NSData *cipherData = [[PBGMService shared] sm4_encryptData:plainData withCipherKey:sm4_key];
@@ -37,6 +37,7 @@
     NSData *decryptData = [[PBGMService shared] sm4_decryptData:cipherData withCipherKey:sm4_key];
     NSString *convertString = [[NSString alloc] initWithData:decryptData encoding:NSUTF8StringEncoding];
     NSLog(@"解密结果:%@", convertString);
+    //*/
     
     /*加密文件 pass
     NSString *srcPath = @"/Users/nanhujiaju/Desktop/Appdelegate.h";
@@ -89,7 +90,7 @@
     NSLog(@"验证结果:%@", ret?@"成功！":@"失败！");
     //*/
     
-    //sm4 sample stream encrypt/decrypt
+    /*sm4 sample stream encrypt/decrypt
     //这里示例为语音录音后的数据缓存段
     AudioQueueBufferRef buffer = NULL;//如何实现录音不再赘述
     NSData *bufferData = [NSData dataWithBytes:buffer->mAudioData length:buffer->mAudioDataByteSize];
@@ -115,6 +116,21 @@
     unsigned int out_len2 = 0;
     [[PBGMService shared] sm4_decryptStream:outBytes inLength:out_len withOutput:out2 outLength:&out_len2 withCipherKey:sm4_key];
     out2[out_len2] = '\0';
+    //*/
+    
+    //aes-gcm encrypt/decrypt
+    NSString *aes_gcm128_key = [[PBGMService shared] randomAESGCM128Key];
+    NSLog(@"key for aes-gcm-128:%@", aes_gcm128_key);
+    NSString *plainText = @"hello, world! and home town";
+    NSData *plainData = [plainText dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *cipherData = [[PBGMService shared] aes_gcm128EncryptData:plainData withKey:aes_gcm128_key];
+    NSString *base64Cipher = [cipherData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSLog(@"加密结果:%@---%@", cipherData, base64Cipher);
+    
+    
+    NSData *decryptData = [[PBGMService shared] aes_gcm128DEcryptData:cipherData withKey:aes_gcm128_key];
+    NSString *convertString = [[NSString alloc] initWithData:decryptData encoding:NSUTF8StringEncoding];
+    NSLog(@"解密结果:%@", convertString);
 }
 
 

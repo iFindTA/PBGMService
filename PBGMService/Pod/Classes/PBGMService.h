@@ -156,7 +156,32 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sm4_decryptStream:(const Byte *)inBytes  inLength:(unsigned int)inLen withOutput:(Byte *)outBytes outLength:(unsigned int *)outLen withCipherKey:(NSString *)key;
 
-#pragma mark --- AES-GCM Algorithm ---
+#pragma mark --- TODO:SM9 Algprithm ---
+
+#pragma mark --- AES-GCM-128 Algorithm ---
+
+/**
+ random key for gcm128-aes
+ */
+- (NSString *)randomAESGCM128Key;
+
+/**
+ AES-GCM-128 encrypt method
+
+ @param plainData for plain-input
+ @param key for aes-gcm
+ @return cipher data
+ */
+- (NSData * _Nullable)aes_gcm128EncryptData:(NSData *)plainData withKey:(NSString *)key;
+
+/**
+ AES-GCM-128 decrypt method
+
+ @param cipherData for cipher-input
+ @param key for aes-gcm
+ @return plain data
+ */
+- (NSData * _Nullable)aes_gcm128DEcryptData:(NSData *)cipherData withKey:(NSString *)key;
 
 @end
 
