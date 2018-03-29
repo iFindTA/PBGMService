@@ -1,4 +1,4 @@
-# PBGMService
+# PBGMService v1.2
 
 国密 SM2/SM3/SM4 Objective-C2.0封装！目前仅有iOS平台，更多平台请稍后...
 
@@ -11,6 +11,10 @@
 **作者观点：算法不是重点！重点是如何提高密钥的安全性（譬如动态白盒）！！！**
 
 觉得有用就亮个Star！
+
+### New Features
+
+* 1,实现了AES下的GCM模式（128）
 	
 ### Usage
 
@@ -156,9 +160,7 @@
 
 * 2，SM9算法的引入及使用
 
-* 3，AES的GCM模式、NI模式等的引入
-
-* 4，android、golang、java等更多平台的支持！
+* 3，android、golang、java等更多平台的支持！
 
 #### feedback
 	nanhujiaju@gmail.com

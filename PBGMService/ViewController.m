@@ -122,15 +122,18 @@
     NSString *aes_gcm128_key = [[PBGMService shared] randomAESGCM128Key];
     NSLog(@"key for aes-gcm-128:%@", aes_gcm128_key);
     NSString *plainText = @"hello, world! and home town";
-    NSData *plainData = [plainText dataUsingEncoding:NSUTF8StringEncoding];
+    //NSData *plainData = [plainText dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *plainData = [NSData dataFromHexString:plainText];
     NSData *cipherData = [[PBGMService shared] aes_gcm128EncryptData:plainData withKey:aes_gcm128_key];
     NSString *base64Cipher = [cipherData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     NSLog(@"加密结果:%@---%@", cipherData, base64Cipher);
     
     
+    //TODO:解密暂时还没有写完
     NSData *decryptData = [[PBGMService shared] aes_gcm128DEcryptData:cipherData withKey:aes_gcm128_key];
     NSString *convertString = [[NSString alloc] initWithData:decryptData encoding:NSUTF8StringEncoding];
     NSLog(@"解密结果:%@", convertString);
+     
 }
 
 

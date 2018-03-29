@@ -10,7 +10,8 @@
 #import "sm2.h"
 #import "sm3.h"
 #import "sm4.h"
-#import "gcm.h"
+#import "aes-gcm.h"
+#import <CommonCrypto/CommonCrypto.h>
 
 //static unsigned int const CURRENT_VERSION   =   23;
 static unsigned int const SM4_BLOCK_SIZE    =   16;
@@ -644,9 +645,9 @@ decrypt_file_end:
 #pragma mark --- AES-GCM-128 Mode ---
 
 - (NSString *)randomAESGCM128Key {
-    return [self randomString4Length:AES_BLOCK_SIZE];
+    return [self randomString4Length:SM4_BLOCK_SIZE ];
 }
-
+/*
 - (NSData * _Nullable)aes_gcm128EncryptData:(NSData *)plainData withKey:(NSString *)key {
     if (plainData == nil) {
         NSLog(@"got an empty data!");
@@ -705,45 +706,23 @@ decrypt_file_end:
         mode += 1;
     }
     /*add_len = mode * AES_BLOCK_SIZE;
-    uint8_t add[add_len];
-    memset( add, 0, add_len*sizeof(uint8_t));
-    uint8_t tag[add_len];
-    memset( tag, 0, add_len*sizeof(uint8_t));
-    size_t tag_len = add_len;
-    //*/
+    //uint8_t add[add_len];
+    //memset( add, 0, add_len*sizeof(uint8_t));
+    //uint8_t tag[add_len];
+    //memset( tag, 0, add_len*sizeof(uint8_t));
+    //size_t tag_len = add_len;
+    ///
     int add_len = 0;
     uint8_t *add = NULL;
     int tag_len = AES_BLOCK_SIZE;
     uint8_t tag[AES_BLOCK_SIZE] = {0};
-    
-    /*
-     gcm_crypt_and_tag( void *context,
-     const unsigned char *iv,
-     size_t iv_len,
-     const unsigned char *add,
-     size_t add_len,
-     const unsigned char *input,
-     size_t length,
-     unsigned char *output,
-     unsigned char *tag,
-     size_t tag_len)
-     */
+ 
     flag = gcm_crypt_and_tag(ctx, iv, iv_len, add, add_len, plainInChar, plainInDataLength + p, cipherOutChar, tag, tag_len);
     if (flag == OPERATION_FAIL) {
         NSLog(@"failed encrypt data with aes-gcm-128 mode!");
         gcm_free( ctx);
         return nil;
     }
-    
-    /* test success
-    unsigned char plainOutChar[plainInDataLength + p];
-    flag = gcm_auth_decrypt(ctx, iv, iv_len, add, add_len, tag, tag_len, cipherOutChar, plainInDataLength + p, plainOutChar);
-    if (flag == OPERATION_FAIL) {
-        NSLog(@"test failed decrypt data with aes-gcm-128 mode!");
-        gcm_free( ctx);
-        return nil;
-    }
-    //*/
     
     gcm_free( ctx);
     
@@ -784,7 +763,7 @@ decrypt_file_end:
     
     
     //decrypt
-    sleep(3);
+    //sleep(5);
     void * context = gcm_init();
     if ( !context ) {
         printf("malloc context for gcm128-aes-decrypt failed.\n");
@@ -801,32 +780,13 @@ decrypt_file_end:
     if (len % AES_BLOCK_SIZE != 0) {
         mode += 1;
     }
-    /*
-    size_t add_len = 0;
-    add_len = mode * AES_BLOCK_SIZE;
-    uint8_t add[add_len];
-    memset( add, 0, add_len*sizeof(uint8_t));
-    uint8_t tag[add_len];
-    memset( tag, 0, add_len*sizeof(uint8_t));
-    size_t tag_len = add_len;
-    //*/
+ 
     int add_len = 0;
     uint8_t *add = NULL;
     int tag_len = AES_BLOCK_SIZE;
     uint8_t tag[AES_BLOCK_SIZE] = {0};
     
-    /*
-     gcm_auth_decrypt( void *context,
-     const unsigned char *iv,
-     size_t iv_len,
-     const unsigned char *add,
-     size_t add_len,
-     const unsigned char *tag,
-     size_t tag_len,
-     const unsigned char *input,
-     size_t length,
-     unsigned char *output )
-     */
+ 
     //调用解密方法，输出是明文plainOutChar
     unsigned char plainOutChar[cipherData.length];
     flag = gcm_auth_decrypt(context, iv, iv_len, add, add_len, tag, tag_len, cipherTextChar, len, plainOutChar);
@@ -847,6 +807,107 @@ decrypt_file_end:
     
     return [[NSData alloc] initWithBytes:plainOutWithoutPadding length:sizeof(plainOutWithoutPadding)];
     //return [NSData dataWithBytes:out length:len];
+}
+//*/
+#define GCM_DEFAULT_IV_LEN (24)
+- (NSData *)aes_gcm128EncryptData:(NSData *)plainData withKey:(NSString *)key {
+    
+    if (plainData == nil) {
+        NSLog(@"got an empty data!");
+        return plainData;
+    }
+    if (plainData.length >= BLOCK_SIZE_CRYPTO) {
+        NSLog(@"could not handle with too large data!");
+        return nil;
+    }
+    if (key.length != SM4_BLOCK_SIZE ) {
+        NSLog(@"got a bad aes-gcm key!");
+        return nil;
+    }
+    NSLog(@"origin:%@", plainData);
+    //pre deal with data
+    //unsigned char * in = (unsigned char *)[plainData bytes];
+    int len = (int)[plainData length];
+    //char * out[len];
+    
+    //*fixed length for padding
+    //a.对明文数据进行填充来保证位数是16的倍数
+    int plainInDataLength = (int)plainData.length;
+    //  p是需要填充的数据也是填充的位数
+    int p = SM4_BLOCK_SIZE - plainInDataLength % SM4_BLOCK_SIZE;
+    unsigned char plainInChar[plainInDataLength + p];
+    memcpy(plainInChar, plainData.bytes, plainInDataLength);
+    //  进行数据填充
+    for (int i = 0; i < p; i++) {
+        plainInChar[plainInDataLength + i] =  p;
+    }
+    unsigned char cipherOutChar[plainInDataLength + p];
+    
+    
+    //prepare key and iv
+    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+    size_t iv_len = GCM_DEFAULT_IV_LEN;
+    uint8_t iv[GCM_DEFAULT_IV_LEN] = {
+        0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88};
+   
+    aes_gcm_encrypt(cipherOutChar, plainInChar, plainInDataLength + p, [keyData bytes],  [keyData length], iv, iv_len);
+    return [NSData dataWithBytes:cipherOutChar length:plainInDataLength + p];
+     //*/
+    
+    //NSString * Key = @"11754cd72aec309bf52f7687212e8957";
+    NSString *IV = @"3c819d9a9bed087615030b65";
+    //NSData *keyData = [Key dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *keyBytes = [NSData dataFromHexString:key];
+    NSData * IVData = [NSData dataFromHexString:IV];
+    uint8_t IVChar[SM4_BLOCK_SIZE] = {
+        0xfe, 0xff, 0xe9, 0x92, 0x86, 0x65, 0x73, 0x1c, 0x6d, 0x6a, 0x8f, 0x94, 0x67, 0x30, 0x83, 0x08};
+    Byte * res[ [plainData length] ];
+    //aes_gcm_encrypt(*res, [plainData bytes], sizeof([plainData bytes]), [keyBytes bytes],  sizeof([keyBytes bytes]), IVChar, sizeof(IVChar));
+    aes_gcm_encrypt(*res, [plainData bytes], plainInDataLength+p, [keyBytes bytes],  sizeof([keyBytes bytes]), IVChar, sizeof(IVChar));
+    return [NSData dataWithBytes:res length:sizeof(res)];
+}
+
+- (NSData *)aes_gcm128DEcryptData:(NSData *)cipherData withKey:(NSString *)key {
+    if (cipherData == nil) {
+        NSLog(@"got an empty data!");
+        return cipherData;
+    }
+    if (cipherData.length >= BLOCK_SIZE_CRYPTO) {
+        NSLog(@"could not handle with too large data!");
+        return nil;
+    }
+    if (key.length != SM4_BLOCK_SIZE ) {
+        NSLog(@"got a bad aes-gcm key!");
+        return nil;
+    }
+    /*prepare key and iv
+    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+    size_t iv_len = GCM_DEFAULT_IV_LEN;
+    uint8_t iv[GCM_DEFAULT_IV_LEN] = {
+        0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88};
+    //*/
+    
+    
+    //NSString * Key = @"11754cd72aec309bf52f7687212e8957";
+    NSString *IV = @"3c819d9a9bed087615030b65";
+    //NSData *keyData = [Key dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *keyBytes = [NSData dataFromHexString:key];
+    NSData * IVData = [NSData dataFromHexString:IV];
+    uint8_t IVChar[SM4_BLOCK_SIZE] = {
+        0xfe, 0xff, 0xe9, 0x92, 0x86, 0x65, 0x73, 0x1c, 0x6d, 0x6a, 0x8f, 0x94, 0x67, 0x30, 0x83, 0x08};
+    
+    int len = (int)[cipherData length];
+    //size_t add_len = AES_BLOCK_SIZE+4;
+    int mode = len / SM4_BLOCK_SIZE;
+    if (len % SM4_BLOCK_SIZE != 0) {
+        mode += 1;
+    }
+    len = mode * SM4_BLOCK_SIZE;
+    Byte * res[ len ];
+    sleep(3);
+    aes_gcm_decrypt(*res, [cipherData bytes], sizeof([cipherData bytes]), [keyBytes bytes],  sizeof([keyBytes bytes]), IVChar, sizeof(IVChar));
+    //aes_gcm_decrypt(*res, [cipherData bytes], len, [keyBytes bytes],  sizeof([keyBytes bytes]), IVChar, sizeof(IVChar));
+    return [NSData dataWithBytes:res length:sizeof(res)];
 }
 
 @end

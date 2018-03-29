@@ -269,6 +269,15 @@
 		6083C85A1F6B65F4001573A1 /* PBGMService.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C819731F666AE100CEC5D6 /* PBGMService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6083C85B1F6B65FC001573A1 /* PBBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 6083C5FC1F6A5DBE001573A1 /* PBBase64.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6083C85C1F6B65FF001573A1 /* PBBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6083C5FD1F6A5DBE001573A1 /* PBBase64.m */; };
+		60895821206BAF1E00D97D81 /* aes-gcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 6089581B206BAF1E00D97D81 /* aes-gcm.c */; };
+		60895822206BAF1E00D97D81 /* aes-gcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 6089581B206BAF1E00D97D81 /* aes-gcm.c */; };
+		60895823206BAF1E00D97D81 /* aes-gcm.h in Headers */ = {isa = PBXBuildFile; fileRef = 6089581C206BAF1E00D97D81 /* aes-gcm.h */; };
+		60895824206BAF1E00D97D81 /* aes.c in Sources */ = {isa = PBXBuildFile; fileRef = 6089581D206BAF1E00D97D81 /* aes.c */; };
+		60895825206BAF1E00D97D81 /* aes.c in Sources */ = {isa = PBXBuildFile; fileRef = 6089581D206BAF1E00D97D81 /* aes.c */; };
+		60895826206BAF1E00D97D81 /* aes.h in Headers */ = {isa = PBXBuildFile; fileRef = 6089581E206BAF1E00D97D81 /* aes.h */; };
+		60895827206BAF1E00D97D81 /* gcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 6089581F206BAF1E00D97D81 /* gcm.c */; };
+		60895828206BAF1E00D97D81 /* gcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 6089581F206BAF1E00D97D81 /* gcm.c */; };
+		60895829206BAF1E00D97D81 /* gcm.h in Headers */ = {isa = PBXBuildFile; fileRef = 60895820206BAF1E00D97D81 /* gcm.h */; };
 		60C819401F6669B600CEC5D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C8193F1F6669B600CEC5D6 /* main.m */; };
 		60C819431F6669B600CEC5D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819421F6669B600CEC5D6 /* AppDelegate.m */; };
 		60C819461F6669B600CEC5D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819451F6669B600CEC5D6 /* ViewController.m */; };
@@ -278,8 +287,6 @@
 		60C819591F6669B700CEC5D6 /* PBGMServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819581F6669B700CEC5D6 /* PBGMServiceTests.m */; };
 		60C819641F6669B700CEC5D6 /* PBGMServiceUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819631F6669B700CEC5D6 /* PBGMServiceUITests.m */; };
 		60C819751F666AE100CEC5D6 /* PBGMService.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C819741F666AE100CEC5D6 /* PBGMService.m */; };
-		60E06E981F7B750700939E90 /* aes.c in Sources */ = {isa = PBXBuildFile; fileRef = 60E06E911F7B74E400939E90 /* aes.c */; };
-		60E06E991F7B750700939E90 /* gcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 60E06E961F7B74E400939E90 /* gcm.c */; };
 		C85BA99E8DAF91C26B6CE21A /* libPods-PBGMService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F180183C0C933DB0AC49DBFD /* libPods-PBGMService.a */; };
 /* End PBXBuildFile section */
 
@@ -479,6 +486,12 @@
 		6083C7C21F6B6544001573A1 /* PBSMxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PBSMxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6083C7C91F6B6545001573A1 /* PBSMxTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PBSMxTests.m; sourceTree = "<group>"; };
 		6083C7CB1F6B6545001573A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6089581B206BAF1E00D97D81 /* aes-gcm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "aes-gcm.c"; sourceTree = "<group>"; };
+		6089581C206BAF1E00D97D81 /* aes-gcm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "aes-gcm.h"; sourceTree = "<group>"; };
+		6089581D206BAF1E00D97D81 /* aes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes.c; sourceTree = "<group>"; };
+		6089581E206BAF1E00D97D81 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		6089581F206BAF1E00D97D81 /* gcm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gcm.c; sourceTree = "<group>"; };
+		60895820206BAF1E00D97D81 /* gcm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gcm.h; sourceTree = "<group>"; };
 		60C8193B1F6669B600CEC5D6 /* PBGMService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PBGMService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C8193F1F6669B600CEC5D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		60C819411F6669B600CEC5D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -497,10 +510,6 @@
 		60C819651F6669B700CEC5D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C819731F666AE100CEC5D6 /* PBGMService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBGMService.h; sourceTree = "<group>"; };
 		60C819741F666AE100CEC5D6 /* PBGMService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBGMService.m; sourceTree = "<group>"; };
-		60E06E911F7B74E400939E90 /* aes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = aes.c; sourceTree = "<group>"; };
-		60E06E921F7B74E400939E90 /* aes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
-		60E06E961F7B74E400939E90 /* gcm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gcm.c; sourceTree = "<group>"; };
-		60E06E971F7B74E400939E90 /* gcm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gcm.h; sourceTree = "<group>"; };
 		BCBA20FE62F1F7CA4E2AA469 /* Pods-PBGMService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PBGMService.release.xcconfig"; path = "Pods/Target Support Files/Pods-PBGMService/Pods-PBGMService.release.xcconfig"; sourceTree = "<group>"; };
 		F180183C0C933DB0AC49DBFD /* libPods-PBGMService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PBGMService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -745,6 +754,19 @@
 			path = PBSMxTests;
 			sourceTree = "<group>";
 		};
+		6089581A206BAF1E00D97D81 /* AES-GCM */ = {
+			isa = PBXGroup;
+			children = (
+				6089581B206BAF1E00D97D81 /* aes-gcm.c */,
+				6089581C206BAF1E00D97D81 /* aes-gcm.h */,
+				6089581D206BAF1E00D97D81 /* aes.c */,
+				6089581E206BAF1E00D97D81 /* aes.h */,
+				6089581F206BAF1E00D97D81 /* gcm.c */,
+				60895820206BAF1E00D97D81 /* gcm.h */,
+			);
+			path = "AES-GCM";
+			sourceTree = "<group>";
+		};
 		60C819321F6669B600CEC5D6 = {
 			isa = PBXGroup;
 			children = (
@@ -836,7 +858,7 @@
 		60C819761F666DD400CEC5D6 /* cores */ = {
 			isa = PBXGroup;
 			children = (
-				60E06E901F7B74E400939E90 /* AES */,
+				6089581A206BAF1E00D97D81 /* AES-GCM */,
 				6083C5FF1F6A61F9001573A1 /* SM2 */,
 				6083C5691F67E16D001573A1 /* SM3 */,
 				60C819771F666DD400CEC5D6 /* SM4 */,
@@ -851,17 +873,6 @@
 				6083C7B31F6A8563001573A1 /* sm4.h */,
 			);
 			path = SM4;
-			sourceTree = "<group>";
-		};
-		60E06E901F7B74E400939E90 /* AES */ = {
-			isa = PBXGroup;
-			children = (
-				60E06E911F7B74E400939E90 /* aes.c */,
-				60E06E921F7B74E400939E90 /* aes.h */,
-				60E06E961F7B74E400939E90 /* gcm.c */,
-				60E06E971F7B74E400939E90 /* gcm.h */,
-			);
-			path = AES;
 			sourceTree = "<group>";
 		};
 		D57B58AE6BEF03D3E578B620 /* Frameworks */ = {
@@ -879,10 +890,13 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60895826206BAF1E00D97D81 /* aes.h in Headers */,
 				6083C7CC1F6B6545001573A1 /* PBSMx.h in Headers */,
+				60895823206BAF1E00D97D81 /* aes-gcm.h in Headers */,
 				6083C85A1F6B65F4001573A1 /* PBGMService.h in Headers */,
 				6083C85B1F6B65FC001573A1 /* PBBase64.h in Headers */,
 				6083C8531F6B65F4001573A1 /* GM_define.h in Headers */,
+				60895829206BAF1E00D97D81 /* gcm.h in Headers */,
 				6083C8541F6B65F4001573A1 /* sm2.h in Headers */,
 				6083C8551F6B65F4001573A1 /* tommath.h in Headers */,
 				6083C8561F6B65F4001573A1 /* tommath_class.h in Headers */,
@@ -1181,6 +1195,7 @@
 				6083C7F01F6B65C2001573A1 /* bn_mp_div_d.c in Sources */,
 				6083C7F11F6B65C2001573A1 /* bn_mp_dr_is_modulus.c in Sources */,
 				6083C7F21F6B65C2001573A1 /* bn_mp_dr_reduce.c in Sources */,
+				60895828206BAF1E00D97D81 /* gcm.c in Sources */,
 				6083C7F31F6B65C2001573A1 /* bn_mp_dr_setup.c in Sources */,
 				6083C7F41F6B65C2001573A1 /* bn_mp_exch.c in Sources */,
 				6083C7F51F6B65C2001573A1 /* bn_mp_expt_d.c in Sources */,
@@ -1194,6 +1209,7 @@
 				6083C7FD1F6B65C2001573A1 /* bn_mp_grow.c in Sources */,
 				6083C7FE1F6B65C2001573A1 /* bn_mp_init.c in Sources */,
 				6083C7FF1F6B65C2001573A1 /* bn_mp_init_copy.c in Sources */,
+				60895822206BAF1E00D97D81 /* aes-gcm.c in Sources */,
 				6083C8001F6B65C2001573A1 /* bn_mp_init_multi.c in Sources */,
 				6083C8011F6B65C2001573A1 /* bn_mp_init_set.c in Sources */,
 				6083C8021F6B65C2001573A1 /* bn_mp_init_set_int.c in Sources */,
@@ -1240,6 +1256,7 @@
 				6083C82B1F6B65C2001573A1 /* bn_mp_reduce_2k_setup_l.c in Sources */,
 				6083C82C1F6B65C2001573A1 /* bn_mp_reduce_is_2k.c in Sources */,
 				6083C82D1F6B65C2001573A1 /* bn_mp_reduce_is_2k_l.c in Sources */,
+				60895825206BAF1E00D97D81 /* aes.c in Sources */,
 				6083C82E1F6B65C2001573A1 /* bn_mp_reduce_setup.c in Sources */,
 				6083C82F1F6B65C2001573A1 /* bn_mp_rshd.c in Sources */,
 				6083C8301F6B65C2001573A1 /* bn_mp_set.c in Sources */,
@@ -1287,8 +1304,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60E06E981F7B750700939E90 /* aes.c in Sources */,
-				60E06E991F7B750700939E90 /* gcm.c in Sources */,
 				6083C7481F6A8535001573A1 /* bn_mp_cmp_d.c in Sources */,
 				6083C7451F6A8535001573A1 /* bn_mp_clear.c in Sources */,
 				6083C77A1F6A8535001573A1 /* bn_mp_or.c in Sources */,
@@ -1307,6 +1322,7 @@
 				6083C73D1F6A8535001573A1 /* bn_fast_s_mp_sqr.c in Sources */,
 				6083C78A1F6A8535001573A1 /* bn_mp_reduce_2k_l.c in Sources */,
 				6083C7A41F6A8535001573A1 /* bn_mp_xor.c in Sources */,
+				60895824206BAF1E00D97D81 /* aes.c in Sources */,
 				6083C7781F6A8535001573A1 /* bn_mp_n_root.c in Sources */,
 				6083C7591F6A8535001573A1 /* bn_mp_exteuclid.c in Sources */,
 				6083C7941F6A8535001573A1 /* bn_mp_signed_bin_size.c in Sources */,
@@ -1344,6 +1360,7 @@
 				6083C7841F6A8535001573A1 /* bn_mp_rand.c in Sources */,
 				6083C7A11F6A8535001573A1 /* bn_mp_toradix.c in Sources */,
 				6083C6161F6A841B001573A1 /* sm2.cpp in Sources */,
+				60895821206BAF1E00D97D81 /* aes-gcm.c in Sources */,
 				6083C74A1F6A8535001573A1 /* bn_mp_cnt_lsb.c in Sources */,
 				6083C7811F6A8535001573A1 /* bn_mp_prime_random_ex.c in Sources */,
 				6083C7881F6A8535001573A1 /* bn_mp_reduce.c in Sources */,
@@ -1388,6 +1405,7 @@
 				6083C7801F6A8535001573A1 /* bn_mp_prime_rabin_miller_trials.c in Sources */,
 				6083C7411F6A8535001573A1 /* bn_mp_add_d.c in Sources */,
 				6083C7731F6A8535001573A1 /* bn_mp_mul.c in Sources */,
+				60895827206BAF1E00D97D81 /* gcm.c in Sources */,
 				6083C7A91F6A8535001573A1 /* bn_s_mp_exptmod.c in Sources */,
 				6083C7751F6A8535001573A1 /* bn_mp_mul_2d.c in Sources */,
 				6083C7681F6A8535001573A1 /* bn_mp_jacobi.c in Sources */,
