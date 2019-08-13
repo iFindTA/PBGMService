@@ -22,14 +22,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  random key-pairs for sm2
-
+ 
  @return [0][1] for public-key, [2] for private-key
  */
 - (NSArray <NSString *>*)randomSM2KeyPairs;
 
 /**
- encrypt plain string with sm2
+ 个性化by zdzhen：
+ 根据指定私钥生成公钥匙
+ @param priKey 私钥值
+ 
+ @return [0] for private-key, [1] for public-key
+ */
+- (NSArray <NSString *>*)randomSM2KeyPairs:(NSString *)priKey;
 
+/**
+ encrypt plain string with sm2
+ 
  @param str for plain string
  @param key for public
  @return cipher string
@@ -38,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  decrypt cipher string with sm2
-
+ 
  @param str for cipher string
  @param key for private
  @return plain string
@@ -47,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  sign plain string for sm2
-
+ 
  @param str for plain string
  @param uid user-identifier
  @param key for private
@@ -57,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  verify sign with plain string for sm2
-
+ 
  @param str for plain string
  @param sign for signed string
  @param uid user-identifier
@@ -70,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  hash data for sm3
-
+ 
  @param plainData for input plain data
  @return hash result, null for error
  */
@@ -78,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  hash file for sm3
-
+ 
  @param path for plain data file path
  @param completion callback for hash result
  */
@@ -98,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  encrypt plain data for sm4
-
+ 
  @param plainData to be encrypted
  @param key for sm4 cbc-mode
  @return encrypt result, null for error
@@ -107,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  decrypt cipher data for sm4
-
+ 
  @param cipherData to be decrypted
  @param key for sm4 cbc-mode
  @return decrypt result, null for error
@@ -116,7 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  encrypt plain file for sm4-ecb
-
+ 
  @param srcPath for origin file path
  @param desPath for destnation file path
  @param key for sm4-ecb
@@ -126,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  decrypt cipher file for sm4-ecb
-
+ 
  @param srcPath for cipher file path
  @param desPath for plain file path
  @param key fir sm4-ecb
@@ -136,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  encrypt plain stream byte for sm4-ecb
-
+ 
  @param inBytes plain bytes
  @param inLen plain byte len
  @param outBytes out cipher bytes
@@ -147,7 +156,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  decrypt cipher stream byte for sm4-ecb
-
+ 
  @param inBytes cipher bytes
  @param inLen cipher byte len
  @param outBytes out plain bytes
@@ -155,6 +164,29 @@ NS_ASSUME_NONNULL_BEGIN
  @param key cipher key
  */
 - (void)sm4_decryptStream:(const Byte *)inBytes  inLength:(unsigned int)inLen withOutput:(Byte *)outBytes outLength:(unsigned int *)outLen withCipherKey:(NSString *)key;
+
+#pragma mark --- zdzhen SM4 个性化支持
+
+/**
+ encrypt plain data for sm4, 对项目进行私有化支持
+ 
+ @param plainData plainData to be encrypted
+ @param keyData 密钥
+ @param ivData 限量，可选（传递位 cbc 模式，ecb 模式）
+ @return encrypt result, null for error
+ */
+- (NSData *)sm4_encryptAndWorkplatform:(NSData *)plainData keyData:(NSData *)keyData ivData:(NSData *)ivData;
+
+/**
+ decrypt plain data for sm4, 对项目进行私有化支持
+ 
+ @param cihperData plainData to be decrypted
+ @param keyData 密钥
+ @param ivData 限量，可选（传递位 cbc 模式，ecb 模式）
+ @return decrypt result, null for error
+ */
+- (NSData *)sm4_decryptAndWorkplatform:(NSData *)cihperData keyData:(NSData *)keyData ivData:(NSData *)ivData;
+
 
 #pragma mark --- TODO:SM9 Algprithm ---
 
@@ -167,7 +199,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  AES-GCM-128 encrypt method
-
+ 
  @param plainData for plain-input
  @param key for aes-gcm
  @return cipher data
@@ -176,7 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  AES-GCM-128 decrypt method
-
+ 
  @param cipherData for cipher-input
  @param key for aes-gcm
  @return plain data

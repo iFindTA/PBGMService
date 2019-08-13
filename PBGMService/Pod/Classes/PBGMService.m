@@ -19,6 +19,8 @@ static unsigned int const SM4_BLOCK_SIZE    =   16;
 static unsigned int const BLOCK_SIZE_CRYPTO         =   1024;
 /** vector for aes/sm4 **/
 static NSString * const IV_SM4              =   @"sm4ivectorcodec1";
+// SM4 singed encrypt count
+static unsigned int const SM4_ENCRYPT_SIZE = 32;
 
 @interface PBGMService ()
 
@@ -82,6 +84,115 @@ static PBGMService * instance = nil;
     return [self randomString4Length:SM4_BLOCK_SIZE];//32bit for 256-mode
 }
 
+- (NSData *)sm4_encryptAndWorkplatform:(NSData *)plainData keyData:(NSData *)keyData ivData:(NSData *)ivData
+{
+    if (plainData == nil) {
+        NSLog(@"got an empty data!");
+        return nil;
+    }
+    if (keyData.length != SM4_BLOCK_SIZE) {
+        NSLog(@"got a bad sm4 key!");
+        return nil;
+    }
+    
+    // - 获取明文字节数据
+    int plainInDataLength = (int)plainData.length;
+    // - 根据余数计算填充的位数，默认为0，p是需要填充的数据也是填充的位数
+    int p = 0;
+    int diff = SM4_BLOCK_SIZE/2;
+    if (plainInDataLength < diff) {
+        // 例如明文数据：12，需要补4
+        p = SM4_BLOCK_SIZE - plainInDataLength;
+        diff = SM4_BLOCK_SIZE;
+    } else {
+        if (plainInDataLength%diff != 0) {
+            p = diff - plainInDataLength % diff;
+        } else {
+            diff = SM4_BLOCK_SIZE;
+        }
+    }
+    // - 声明输出字节，长度为明文字节+补位长度
+    int dataLength = plainInDataLength + p;
+    
+    unsigned char cipherOutChar[dataLength];
+    const char *utf8Key = (const char *)keyData.bytes;
+    size_t len = keyData.length;
+    unsigned char sm4Key[len];
+    memcpy(sm4Key, utf8Key, len);
+    
+    // - 声明输入字节，缺省位自动补 0x00
+    unsigned char plainInChar[dataLength];
+    memcpy(plainInChar, plainData.bytes, plainInDataLength);
+    for (int i = 0; i<p; i++) {
+        plainInChar[plainInDataLength+i] = 0x00;
+    }
+    sm4_context ctx;
+    // - 设置上下文和密钥
+    sm4_setkey_enc(&ctx,sm4Key);
+    // - 加密
+    if (ivData.length > 0) {
+        // cbc模式，加密
+        const char *vector = (const char *)ivData.bytes;
+        for (int i = 0; i<dataLength; i++) {
+            plainInChar[i] = (unsigned char) (plainInChar[i] ^ vector[i%16]);
+        }
+        sm4_crypt_iterator(&ctx, SM4_ENCRYPT, dataLength, plainInChar, cipherOutChar, SM4_ENCRYPT_SIZE);
+    } else {
+        // ecb模式，加密
+        sm4_crypt_iterator(&ctx, SM4_ENCRYPT, dataLength, plainInChar, cipherOutChar, SM4_ENCRYPT_SIZE);
+    }
+    // - 获取加密结果
+    NSData *cipherTextData =  [[NSData alloc]initWithBytes:cipherOutChar length:dataLength];
+    return cipherTextData;
+}
+
+- (NSData *)sm4_decryptAndWorkplatform:(NSData *)cihperData keyData:(NSData *)keyData ivData:(NSData *)ivData
+{
+    if (cihperData == nil) {
+        NSLog(@"got an empty data!");
+        return nil;
+    }
+    if (keyData.length != SM4_BLOCK_SIZE) {
+        NSLog(@"got a bad sm4 key!");
+        return nil;
+    }
+    // - 将密文转换为字节
+    unsigned char cipherTextChar[cihperData.length];
+    memcpy(cipherTextChar, cihperData.bytes, cihperData.length);
+    
+    // - 将密钥转换为字节
+    const char* utf8Key = (const char *)[keyData bytes];
+    size_t len = keyData.length;
+    unsigned char sm4Key[len];
+    memcpy(sm4Key, utf8Key, len);
+    
+    // - 声明输出是明文字节plainOutChar
+    unsigned char plainOutChar[cihperData.length];
+    int dataLength = (int)cihperData.length;
+    // 执行sm4解密
+    sm4_context ctx;
+    sm4_setkey_dec(&ctx,sm4Key);
+    
+    if (ivData.length > 0) {
+        // 先进行解密迭代
+        sm4_crypt_iterator(&ctx, SM4_DECRYPT, dataLength, cipherTextChar, plainOutChar, SM4_ENCRYPT_SIZE);
+        // cbc模式，解密运算
+        const char *vector = (const char *)ivData.bytes;
+        // 对整数倍的密文，进行分块处理，异或运算
+        for (int i = 0; i<dataLength; i++) {
+            plainOutChar[i] = (unsigned char) (plainOutChar[i] ^ vector[i%16]);
+        }
+    } else {
+        // ecb模式，加密
+        sm4_crypt_iterator(&ctx, SM4_DECRYPT, (int)cihperData.length, cipherTextChar, plainOutChar, SM4_ENCRYPT_SIZE);
+    }
+    
+    
+    // - 获取解密结果
+    NSData *plainTextData =  [[NSData alloc]initWithBytes:plainOutChar length:dataLength];
+    return plainTextData;
+}
+
 - (NSData * _Nullable)sm4_encryptData:(NSData *)plainInData withCipherKey:(NSString *)key {
     if (plainInData == nil) {
         NSLog(@"got an empty data!");
@@ -104,10 +215,10 @@ static PBGMService * instance = nil;
     }
     
     //b.验证一下填充后的char[]是不是最开始的明文数据
-//    NSLog(@"plainInData=%@",plainInData);
-//    NSData *data = [[NSData alloc]initWithBytes:plainInChar length:sizeof(plainInChar)-p];
-//    NSLog(@"data=%@",data);
-//    NSLog(@"填充后的char[]转成NSString=%@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
+    //    NSLog(@"plainInData=%@",plainInData);
+    //    NSData *data = [[NSData alloc]initWithBytes:plainInChar length:sizeof(plainInChar)-p];
+    //    NSLog(@"data=%@",data);
+    //    NSLog(@"填充后的char[]转成NSString=%@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
     
     
     //4.对plainInChar加密，由于源代码中加解密是放在一起的，现在在sm4test.c中新添加两个方法把加密和解密分开,由于计算length总出问题，所以直接把length作为参数传进去
@@ -131,8 +242,8 @@ static PBGMService * instance = nil;
     //testEncodejiami(plainInDataLength + p, plainInChar, cipherOutChar);
     //对加密的数据输出
     NSData *cipherTextData =  [[NSData alloc]initWithBytes:cipherOutChar length:sizeof(cipherOutChar)];
-//    NSLog(@"密文NSData=%@",cipherTextData);
-//    NSLog(@"密文转成NSString=%@",[[NSString alloc]initWithData:cipherTextData encoding:NSUTF8StringEncoding]);
+    //    NSLog(@"密文NSData=%@",cipherTextData);
+    //    NSLog(@"密文转成NSString=%@",[[NSString alloc]initWithData:cipherTextData encoding:NSUTF8StringEncoding]);
     return cipherTextData;
 }
 
@@ -240,11 +351,11 @@ long file_len(FILE *file) {
     int block_size = SM4_BLOCK_SIZE;
     
     //write version to dest file
-//    w = fwrite(version, sizeof(Byte), VERSION_PREFIX_LEN, out_f);
-//    if (w != VERSION_PREFIX_LEN) {
-//        err = assembleErrorWithDomain(@"write version to dest file error!");
-//        goto encrypt_file_end;
-//    }
+    //    w = fwrite(version, sizeof(Byte), VERSION_PREFIX_LEN, out_f);
+    //    if (w != VERSION_PREFIX_LEN) {
+    //        err = assembleErrorWithDomain(@"write version to dest file error!");
+    //        goto encrypt_file_end;
+    //    }
     
     //read cycle
     in_len = file_length < FILE_MAX_CRYPTO_SIZE ? file_length : FILE_MAX_CRYPTO_SIZE;//最多加密定义的大小
@@ -369,11 +480,11 @@ encrypt_file_end:
     size_t w;
     size_t len_tmp;
     
-//    w = fread(version, sizeof(Byte), VERSION_PREFIX_LEN, in_f);
-//    if (w != VERSION_PREFIX_LEN) {
-//        err = assembleErrorWithDomain(@"read in_file error");
-//        goto decrypt_file_end;
-//    }
+    //    w = fread(version, sizeof(Byte), VERSION_PREFIX_LEN, in_f);
+    //    if (w != VERSION_PREFIX_LEN) {
+    //        err = assembleErrorWithDomain(@"read in_file error");
+    //        goto decrypt_file_end;
+    //    }
     
     //start decrypt
     int block_size = SM4_BLOCK_SIZE;
@@ -550,14 +661,55 @@ decrypt_file_end:
     return @[pubX,pubY,pri];
 }
 
+- (NSArray<NSString *> *)randomSM2KeyPairs:(NSString *)priKey {
+    
+    unsigned char buff[65] = {0};
+    unsigned char prikeyBuff[2000] = {0};
+    unsigned long priLen = 2000;
+    if (priKey.length > 0) {
+        NSData *prikeyDs = [NSData dataFromHexString:priKey];
+        priLen = prikeyDs.length;
+        memcpy(prikeyBuff, prikeyDs.bytes, prikeyDs.length);
+        GM_GenSM2keypair(prikeyBuff, &priLen, buff);
+    } else {
+        priLen = 0;
+        GM_GenSM2keypair(prikeyBuff, &priLen, buff);
+    }
+    
+    NSData *pubHeadD = [NSData dataWithBytes:buff length:1];
+    NSData *pubXD = [NSData dataWithBytes:buff+1 length:32];
+    NSData *pubYD = [NSData dataWithBytes:buff+32+1 length:32];
+    NSData *priD = [NSData dataWithBytes:prikeyBuff length:priLen];
+    NSString *pubhead = [pubHeadD hexStringFromData:pubHeadD];
+    NSString *pubX = [pubXD hexStringFromData:pubXD];
+    NSString *pubY = [pubYD hexStringFromData:pubYD];
+    NSString *pri = [priD hexStringFromData:priD];
+    NSString *pub = [pubhead stringByAppendingString:[pubX stringByAppendingString:pubY]];
+    
+    return @[pri, pub];
+}
+
 - (NSString * _Nullable)sm2_encryptPlainString:(NSString *)str withPublicKey:(NSString *)key {
     if ([str length] == 0 || [key length] == 0) {
         return @"";
     }
     
-    unsigned char result[1024] = {0};
-    unsigned long outlen = 1024;
+    NSData *ds = [key dataUsingEncoding:NSUTF8StringEncoding];
+    if ((ds.length / 2) != 64) {
+        // 公钥的长度应该默认都是 64，如果大于该位数表示不正确，默认会从头开始截取
+        NSInteger diff = (ds.length / 2) - 64;
+        for (NSInteger i = 0; i < (diff * 2); i++) {
+            key = [key substringFromIndex:1];
+        }
+    }
+    
     const char *encryptData = [str cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    int plainInDataLength = (int)str.length;
+    unsigned long outlen = plainInDataLength + 32 + 1024;
+    unsigned char result[outlen];
+    memset(result, 0x00, outlen);
+    
     NSData *keyData =  [NSData dataFromHexString:key];
     
     int ret = GM_SM2Encrypt(result,&outlen,(unsigned char *)encryptData,strlen(encryptData),(unsigned char *)keyData.bytes,keyData.length);
@@ -568,7 +720,7 @@ decrypt_file_end:
     }
     
     //多一位\x04 需要去掉
-    NSData *data = [NSData dataWithBytes:result + 1 length:outlen - 1];
+    NSData *data = [NSData dataWithBytes:result length:outlen];
     
     return [data hexStringFromData:data];
 }
@@ -579,17 +731,21 @@ decrypt_file_end:
         return @"";
     }
     
-    unsigned char result[1024 * 8] = {0};
     
-    unsigned char pass[1024] = {0};
+    int plainInDataLength = (int)str.length;
+    unsigned long inlen = (plainInDataLength + 32 + 1024);
+    unsigned char pass[inlen];
+    memset(pass, 0x00, inlen);
+    
+    unsigned char result[inlen];
+    memset(result, 0x00, inlen);
     
     NSData *keyData =  [NSData dataFromHexString:key];
     
     NSData *data = [NSData dataFromHexString:str];
-    pass[0] = '\x04'; //需要补一位\x04
-    memcpy(pass + 1, data.bytes, data.length);
+    memcpy(pass, data.bytes, data.length);
     
-    unsigned long outlen = 1024;
+    unsigned long outlen = inlen;
     
     int ret = GM_SM2Decrypt((unsigned char *)result, &outlen, pass, data.length + 1, (unsigned char *)keyData.bytes, keyData.length);
     
@@ -620,8 +776,8 @@ decrypt_file_end:
     }
     
     //验证签名
-//    NSData *priKeyData =  [NSData dataFromHexString:priKey];
-//    ret = GM_SM2VerifySig((unsigned char *)result, outlen, (unsigned char *)signData, strlen(signData), (unsigned char *)uidData, strlen(uidData), (unsigned char *)priKeyData.bytes, priKeyData.length);
+    //    NSData *priKeyData =  [NSData dataFromHexString:priKey];
+    //    ret = GM_SM2VerifySig((unsigned char *)result, outlen, (unsigned char *)signData, strlen(signData), (unsigned char *)uidData, strlen(uidData), (unsigned char *)priKeyData.bytes, priKeyData.length);
     
     //多一位\x04 需要去掉
     NSData *data = [NSData dataWithBytes:result length:outlen];
@@ -635,7 +791,14 @@ decrypt_file_end:
     const char *srcData = [str cStringUsingEncoding:NSUTF8StringEncoding];
     NSData *signData = [NSData dataFromHexString:sign];
     const char *uidData = [uid cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    
     NSData *keyData =  [NSData dataFromHexString:key];
+    if (keyData.length > 64) {
+        // 移除首位04开头
+        const void * pubkeyTemp = [keyData bytes];
+        keyData = [NSData dataWithBytes:pubkeyTemp+1 length:keyData.length - 1];
+    }
     
     int ret = GM_SM2VerifySig((unsigned char *)signData.bytes, signData.length, (unsigned char *)srcData, strlen(srcData), (unsigned char *)uidData, strlen(uidData), (unsigned char *)keyData.bytes, keyData.length);
     
@@ -648,167 +811,167 @@ decrypt_file_end:
     return [self randomString4Length:SM4_BLOCK_SIZE ];
 }
 /*
-- (NSData * _Nullable)aes_gcm128EncryptData:(NSData *)plainData withKey:(NSString *)key {
-    if (plainData == nil) {
-        NSLog(@"got an empty data!");
-        return plainData;
-    }
-    if (plainData.length >= BLOCK_SIZE_CRYPTO) {
-        NSLog(@"could not handle with too large data!");
-        return nil;
-    }
-    if (key.length != AES_BLOCK_SIZE) {
-        NSLog(@"got a bad aes-gcm key!");
-        return nil;
-    }
-    NSLog(@"origin:%@", plainData);
-    //prepare key and iv
-    size_t iv_len = GCM_DEFAULT_IV_LEN;
-    uint8_t iv[GCM_DEFAULT_IV_LEN] = {
-        0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88};
-//    NSData *keyData =  [NSData dataFromHexString:key];
-//    unsigned char * keyChar = (unsigned char *)[keyData bytes];
-    uint8_t keyChar[AES_BLOCK_SIZE] = {
-        0xfe, 0xff, 0xe9, 0x92, 0x86, 0x65, 0x73, 0x1c, 0x6d, 0x6a, 0x8f, 0x94, 0x67, 0x30, 0x83, 0x08};
-    
-    //pre deal with data
-    //unsigned char * in = (unsigned char *)[plainData bytes];
-    int len = (int)[plainData length];
-    //char * out[len];
-    
-    //fixed length for padding
-    //a.对明文数据进行填充来保证位数是16的倍数
-    int plainInDataLength = (int)plainData.length;
-    //  p是需要填充的数据也是填充的位数
-    int p = AES_BLOCK_SIZE - plainInDataLength % AES_BLOCK_SIZE;
-    unsigned char plainInChar[plainInDataLength + p];
-    memcpy(plainInChar, plainData.bytes, plainInDataLength);
-    //  进行数据填充
-    for (int i = 0; i < p; i++) {
-        plainInChar[plainInDataLength + i] =  p;
-    }
-    unsigned char cipherOutChar[plainInDataLength + p];
-    
-    //encrypt
-    void * ctx = gcm_init();
-    if ( !ctx ) {
-        printf("malloc context for gcm128-aes failed.\n");
-        return nil;
-    }
-    operation_result flag = gcm_setkey(ctx, keyChar, 128 );
-    if ( OPERATION_FAIL == flag ) {
-        NSLog(@"failed to encrypt with aes-gcm-128!");
-        return nil;
-    }
-    //size_t add_len = AES_BLOCK_SIZE+4;
-    int mode = len / AES_BLOCK_SIZE;
-    if (len % AES_BLOCK_SIZE != 0) {
-        mode += 1;
-    }
-    /*add_len = mode * AES_BLOCK_SIZE;
-    //uint8_t add[add_len];
-    //memset( add, 0, add_len*sizeof(uint8_t));
-    //uint8_t tag[add_len];
-    //memset( tag, 0, add_len*sizeof(uint8_t));
-    //size_t tag_len = add_len;
-    ///
-    int add_len = 0;
-    uint8_t *add = NULL;
-    int tag_len = AES_BLOCK_SIZE;
-    uint8_t tag[AES_BLOCK_SIZE] = {0};
+ - (NSData * _Nullable)aes_gcm128EncryptData:(NSData *)plainData withKey:(NSString *)key {
+ if (plainData == nil) {
+ NSLog(@"got an empty data!");
+ return plainData;
+ }
+ if (plainData.length >= BLOCK_SIZE_CRYPTO) {
+ NSLog(@"could not handle with too large data!");
+ return nil;
+ }
+ if (key.length != AES_BLOCK_SIZE) {
+ NSLog(@"got a bad aes-gcm key!");
+ return nil;
+ }
+ NSLog(@"origin:%@", plainData);
+ //prepare key and iv
+ size_t iv_len = GCM_DEFAULT_IV_LEN;
+ uint8_t iv[GCM_DEFAULT_IV_LEN] = {
+ 0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88};
+ //    NSData *keyData =  [NSData dataFromHexString:key];
+ //    unsigned char * keyChar = (unsigned char *)[keyData bytes];
+ uint8_t keyChar[AES_BLOCK_SIZE] = {
+ 0xfe, 0xff, 0xe9, 0x92, 0x86, 0x65, 0x73, 0x1c, 0x6d, 0x6a, 0x8f, 0x94, 0x67, 0x30, 0x83, 0x08};
  
-    flag = gcm_crypt_and_tag(ctx, iv, iv_len, add, add_len, plainInChar, plainInDataLength + p, cipherOutChar, tag, tag_len);
-    if (flag == OPERATION_FAIL) {
-        NSLog(@"failed encrypt data with aes-gcm-128 mode!");
-        gcm_free( ctx);
-        return nil;
-    }
-    
-    gcm_free( ctx);
-    
-    //return [NSData dataWithBytes:out length:len];
-    return [[NSData alloc] initWithBytes:cipherOutChar length:sizeof(cipherOutChar)];
-}
-
-- (NSData * _Nullable)aes_gcm128DEcryptData:(NSData *)cipherData withKey:(NSString *)key {
-    if (cipherData == nil) {
-        NSLog(@"got an empty data!");
-        return cipherData;
-    }
-    if (cipherData.length >= BLOCK_SIZE_CRYPTO) {
-        NSLog(@"could not handle with too large data!");
-        return nil;
-    }
-    if (key.length != AES_BLOCK_SIZE) {
-        NSLog(@"got a bad aes-gcm key!");
-        return nil;
-    }
-    //prepare key and iv
-    size_t iv_len = GCM_DEFAULT_IV_LEN;
-    uint8_t iv[GCM_DEFAULT_IV_LEN] = {
-        0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88};
-//    NSData *keyData =  [NSData dataFromHexString:key];
-//    unsigned char * keyChar = (unsigned char *)[keyData bytes];
-    uint8_t keyChar[AES_BLOCK_SIZE] = {
-        0xfe, 0xff, 0xe9, 0x92, 0x86, 0x65, 0x73, 0x1c, 0x6d, 0x6a, 0x8f, 0x94, 0x67, 0x30, 0x83, 0x08};
-    
-    //pre deal with data
-    //unsigned char * in = (unsigned char *)[cipherData bytes];
-    int len = (int)[cipherData length];
-    //char * out[len];
-    //6将cipherTextData作为输入，调用第4步的解密方法，进行解密
-    //将data拷贝到字符数组中
-    unsigned char cipherTextChar[cipherData.length];
-    memcpy(cipherTextChar, cipherData.bytes, cipherData.length);
-    
-    
-    //decrypt
-    //sleep(5);
-    void * context = gcm_init();
-    if ( !context ) {
-        printf("malloc context for gcm128-aes-decrypt failed.\n");
-        return nil;
-    }
-    operation_result flag = gcm_setkey(context, keyChar, 128 );
-    if ( OPERATION_FAIL == flag ) {
-        NSLog(@"failed to decrypt with aes-gcm-128!");
-        return nil;
-    }
-    
-    //size_t add_len = AES_BLOCK_SIZE+4;
-    int mode = len / AES_BLOCK_SIZE;
-    if (len % AES_BLOCK_SIZE != 0) {
-        mode += 1;
-    }
+ //pre deal with data
+ //unsigned char * in = (unsigned char *)[plainData bytes];
+ int len = (int)[plainData length];
+ //char * out[len];
  
-    int add_len = 0;
-    uint8_t *add = NULL;
-    int tag_len = AES_BLOCK_SIZE;
-    uint8_t tag[AES_BLOCK_SIZE] = {0};
-    
+ //fixed length for padding
+ //a.对明文数据进行填充来保证位数是16的倍数
+ int plainInDataLength = (int)plainData.length;
+ //  p是需要填充的数据也是填充的位数
+ int p = AES_BLOCK_SIZE - plainInDataLength % AES_BLOCK_SIZE;
+ unsigned char plainInChar[plainInDataLength + p];
+ memcpy(plainInChar, plainData.bytes, plainInDataLength);
+ //  进行数据填充
+ for (int i = 0; i < p; i++) {
+ plainInChar[plainInDataLength + i] =  p;
+ }
+ unsigned char cipherOutChar[plainInDataLength + p];
  
-    //调用解密方法，输出是明文plainOutChar
-    unsigned char plainOutChar[cipherData.length];
-    flag = gcm_auth_decrypt(context, iv, iv_len, add, add_len, tag, tag_len, cipherTextChar, len, plainOutChar);
-    if (flag == OPERATION_FAIL) {
-        NSLog(@"failed decrypt data with aes-gcm-128 mode!");
-        gcm_free( context);
-        return nil;
-    }
-    
-    gcm_free( context);
-    
-    //由于明文是填充过的，解密时候要去填充，去填充要在解密后才可以，在解密前是去不了的
-    int p2 = plainOutChar[sizeof(plainOutChar) - 1];//p2是填充的数据，也是填充的长度
-    int outLength = (int)cipherData.length-p2;//明文的长度
-    //去掉填充得到明文
-    unsigned char plainOutWithoutPadding[outLength];
-    memcpy(plainOutWithoutPadding, plainOutChar, outLength);
-    
-    return [[NSData alloc] initWithBytes:plainOutWithoutPadding length:sizeof(plainOutWithoutPadding)];
-    //return [NSData dataWithBytes:out length:len];
-}
-//*/
+ //encrypt
+ void * ctx = gcm_init();
+ if ( !ctx ) {
+ printf("malloc context for gcm128-aes failed.\n");
+ return nil;
+ }
+ operation_result flag = gcm_setkey(ctx, keyChar, 128 );
+ if ( OPERATION_FAIL == flag ) {
+ NSLog(@"failed to encrypt with aes-gcm-128!");
+ return nil;
+ }
+ //size_t add_len = AES_BLOCK_SIZE+4;
+ int mode = len / AES_BLOCK_SIZE;
+ if (len % AES_BLOCK_SIZE != 0) {
+ mode += 1;
+ }
+ /*add_len = mode * AES_BLOCK_SIZE;
+ //uint8_t add[add_len];
+ //memset( add, 0, add_len*sizeof(uint8_t));
+ //uint8_t tag[add_len];
+ //memset( tag, 0, add_len*sizeof(uint8_t));
+ //size_t tag_len = add_len;
+ ///
+ int add_len = 0;
+ uint8_t *add = NULL;
+ int tag_len = AES_BLOCK_SIZE;
+ uint8_t tag[AES_BLOCK_SIZE] = {0};
+ 
+ flag = gcm_crypt_and_tag(ctx, iv, iv_len, add, add_len, plainInChar, plainInDataLength + p, cipherOutChar, tag, tag_len);
+ if (flag == OPERATION_FAIL) {
+ NSLog(@"failed encrypt data with aes-gcm-128 mode!");
+ gcm_free( ctx);
+ return nil;
+ }
+ 
+ gcm_free( ctx);
+ 
+ //return [NSData dataWithBytes:out length:len];
+ return [[NSData alloc] initWithBytes:cipherOutChar length:sizeof(cipherOutChar)];
+ }
+ 
+ - (NSData * _Nullable)aes_gcm128DEcryptData:(NSData *)cipherData withKey:(NSString *)key {
+ if (cipherData == nil) {
+ NSLog(@"got an empty data!");
+ return cipherData;
+ }
+ if (cipherData.length >= BLOCK_SIZE_CRYPTO) {
+ NSLog(@"could not handle with too large data!");
+ return nil;
+ }
+ if (key.length != AES_BLOCK_SIZE) {
+ NSLog(@"got a bad aes-gcm key!");
+ return nil;
+ }
+ //prepare key and iv
+ size_t iv_len = GCM_DEFAULT_IV_LEN;
+ uint8_t iv[GCM_DEFAULT_IV_LEN] = {
+ 0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88};
+ //    NSData *keyData =  [NSData dataFromHexString:key];
+ //    unsigned char * keyChar = (unsigned char *)[keyData bytes];
+ uint8_t keyChar[AES_BLOCK_SIZE] = {
+ 0xfe, 0xff, 0xe9, 0x92, 0x86, 0x65, 0x73, 0x1c, 0x6d, 0x6a, 0x8f, 0x94, 0x67, 0x30, 0x83, 0x08};
+ 
+ //pre deal with data
+ //unsigned char * in = (unsigned char *)[cipherData bytes];
+ int len = (int)[cipherData length];
+ //char * out[len];
+ //6将cipherTextData作为输入，调用第4步的解密方法，进行解密
+ //将data拷贝到字符数组中
+ unsigned char cipherTextChar[cipherData.length];
+ memcpy(cipherTextChar, cipherData.bytes, cipherData.length);
+ 
+ 
+ //decrypt
+ //sleep(5);
+ void * context = gcm_init();
+ if ( !context ) {
+ printf("malloc context for gcm128-aes-decrypt failed.\n");
+ return nil;
+ }
+ operation_result flag = gcm_setkey(context, keyChar, 128 );
+ if ( OPERATION_FAIL == flag ) {
+ NSLog(@"failed to decrypt with aes-gcm-128!");
+ return nil;
+ }
+ 
+ //size_t add_len = AES_BLOCK_SIZE+4;
+ int mode = len / AES_BLOCK_SIZE;
+ if (len % AES_BLOCK_SIZE != 0) {
+ mode += 1;
+ }
+ 
+ int add_len = 0;
+ uint8_t *add = NULL;
+ int tag_len = AES_BLOCK_SIZE;
+ uint8_t tag[AES_BLOCK_SIZE] = {0};
+ 
+ 
+ //调用解密方法，输出是明文plainOutChar
+ unsigned char plainOutChar[cipherData.length];
+ flag = gcm_auth_decrypt(context, iv, iv_len, add, add_len, tag, tag_len, cipherTextChar, len, plainOutChar);
+ if (flag == OPERATION_FAIL) {
+ NSLog(@"failed decrypt data with aes-gcm-128 mode!");
+ gcm_free( context);
+ return nil;
+ }
+ 
+ gcm_free( context);
+ 
+ //由于明文是填充过的，解密时候要去填充，去填充要在解密后才可以，在解密前是去不了的
+ int p2 = plainOutChar[sizeof(plainOutChar) - 1];//p2是填充的数据，也是填充的长度
+ int outLength = (int)cipherData.length-p2;//明文的长度
+ //去掉填充得到明文
+ unsigned char plainOutWithoutPadding[outLength];
+ memcpy(plainOutWithoutPadding, plainOutChar, outLength);
+ 
+ return [[NSData alloc] initWithBytes:plainOutWithoutPadding length:sizeof(plainOutWithoutPadding)];
+ //return [NSData dataWithBytes:out length:len];
+ }
+ //*/
 #define GCM_DEFAULT_IV_LEN (24)
 - (NSData *)aes_gcm128EncryptData:(NSData *)plainData withKey:(NSString *)key {
     
@@ -849,10 +1012,10 @@ decrypt_file_end:
     size_t iv_len = GCM_DEFAULT_IV_LEN;
     uint8_t iv[GCM_DEFAULT_IV_LEN] = {
         0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88};
-   
+    
     aes_gcm_encrypt(cipherOutChar, plainInChar, plainInDataLength + p, [keyData bytes],  [keyData length], iv, iv_len);
     return [NSData dataWithBytes:cipherOutChar length:plainInDataLength + p];
-     //*/
+    //*/
     
     //NSString * Key = @"11754cd72aec309bf52f7687212e8957";
     NSString *IV = @"3c819d9a9bed087615030b65";
@@ -881,11 +1044,11 @@ decrypt_file_end:
         return nil;
     }
     /*prepare key and iv
-    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-    size_t iv_len = GCM_DEFAULT_IV_LEN;
-    uint8_t iv[GCM_DEFAULT_IV_LEN] = {
-        0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88};
-    //*/
+     NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+     size_t iv_len = GCM_DEFAULT_IV_LEN;
+     uint8_t iv[GCM_DEFAULT_IV_LEN] = {
+     0xca, 0xfe, 0xba, 0xbe, 0xfa, 0xce, 0xdb, 0xad, 0xde, 0xca, 0xf8, 0x88, 0xde, 0xca, 0xf8, 0x88};
+     //*/
     
     
     //NSString * Key = @"11754cd72aec309bf52f7687212e8957";
